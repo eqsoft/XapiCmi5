@@ -1,0 +1,33 @@
+<script type="text/javascript" src="./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/templates/default/base64.js"></script>
+<script type="text/javascript">
+function Config() {
+    "use strict";
+}
+Config.endpoint = '{ILIAS_URL}/Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/xapi/xapiproxy.php';
+Config.actor = { "mbox":"{XAPI_USER_ID}", "name":"{XAPI_USER_NAME}" };
+
+
+function launchxapi() {
+	var auth = 'Basic ' + Base64.encode('{LAUNCH_KEY}' + ':' + '{LAUNCH_SECRET}');
+    var link = '{LAUNCH_URL}' +
+            "?endpoint=" + encodeURIComponent(Config.endpoint) +
+            "&auth=" + encodeURIComponent(auth) +
+            "&actor=" + encodeURIComponent(JSON.stringify(Config.actor));
+	var launch_target='{LAUNCH_TARGET}';
+	if (launch_target == 'window') {
+		window.open(link, '_blank', 'width={WIN_LAUNCH_WIDTH},height={WIN_LAUNCH_HEIGHT}');
+	} else if (launch_target == 'frame') {
+		window.location.replace(link);
+	} else if (launch_target == 'iframe') {
+		document.getElementById('basicXAPILaunchFrame').width='{FRAME_LAUNCH_WIDTH}px';
+		document.getElementById('basicXAPILaunchFrame').height='{FRAME_LAUNCH_HEIGHT}px';
+		document.getElementById('basicXAPILaunchFrame').src = link;
+	} else {
+		alert('failure: launch_target is '+launch_target);
+	}
+}
+</script>
+<a href="javascript:launchxapi()">start</a><br/>
+<iframe name="basicXAPILaunchFrame"  id="basicXAPILaunchFrame" src="" width="1" height="1" scrolling="auto" frameborder="0" transparency></iframe>
+
+{DEBUG_EMBED}

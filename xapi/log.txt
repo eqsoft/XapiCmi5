@@ -1,0 +1,6 @@
+/Users/stefan/Development/Ilias.XAPIPlugin/ExternalContent/xapi
+GET
+https://ilias.simple.org/ilias_fork/Customizing/global/plugins/Services/Repository/RepositoryObject/ExternalContent/xapi/xapiproxy.php/statements?limit=25&related_activities=false&related_agents=false
+/Users/stefan/Development/Ilias.XAPIPlugin/ExternalContent/xapi/src/Middleware
+https://ll.example.com:8443/data/xAPI
+Basic NDM1YmZjNGFjMWZmYTE4YzdiZGIxZGRjOTAwZDdkYTkyY2Q4ODE4NzoxYmY2NzZlYTI4MTBmODBkNmRhMDk5ZWEyNTgxNzM0ZmE1ZWI2NDk5
