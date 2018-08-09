@@ -64,17 +64,17 @@ if(!$ilDB->tableExists('xxcf_data_types'))
 		),
 		'lrs_endpoint' => array(
 			'type' => 'text',
-			'length' => 64,
+			'length' => 255,
 			'notnull' => true
 		),
 		'lrs_key' => array(
 			'type' => 'text',
-			'length' => 64,
+			'length' => 128,
 			'notnull' => true
 		),
 		'lrs_secret' => array(
 			'type' => 'text',
-			'length' => 64,
+			'length' => 128,
 			'notnull' => true
 		),
 		'privacy_ident' => array(

@@ -211,21 +211,21 @@ class ilXapiCmi5ConfigGUI extends ilPluginConfigGUI
 		$item->setValue($this->type->getLrsEndpoint());
 		$item->setInfo($this->plugin_object->txt('info_lrs_endpoint'));
 		$item->setRequired(true);
-		$item->setMaxLength(64);
+		$item->setMaxLength(255);
 		$form->addItem($item);
 		
 		$item = new ilTextInputGUI($this->plugin_object->txt('conf_lrs_key'), 'lrs_key');
 		$item->setValue($this->type->getLrsKey());
 		$item->setInfo($this->plugin_object->txt('info_lrs_key'));
 		$item->setRequired(true);
-		$item->setMaxLength(64);
+		$item->setMaxLength(128);
 		$form->addItem($item);
 
 		$item = new ilTextInputGUI($this->plugin_object->txt('conf_lrs_secret'), 'lrs_secret');
 		$item->setValue($this->type->getLrsSecret());
 		$item->setInfo($this->plugin_object->txt('info_lrs_secret'));
 		$item->setRequired(true);
-		$item->setMaxLength(64);
+		$item->setMaxLength(128);
 		$form->addItem($item);
 
 		$item = new ilCheckboxInputGUI($this->getPluginObject()->txt('conf_external_lrs'), 'external_lrs');
