@@ -35,7 +35,7 @@ class ilXapiCmi5Type
 	 */
 	private $title;
 	private $description;
-	// private $template;
+	private $template;
 	private $launch_type = self::LAUNCH_TYPE_LINK;
 	// private $meta_data_url;
 	
@@ -154,10 +154,10 @@ class ilXapiCmi5Type
 	 // * Get Template
 	 // * @return string template
 	 // */
-	// public function getTemplate()
-	// {
-		// return $this->template;
-	// }
+	public function getTemplate()
+	{
+		return $this->template;
+	}
 
 
 	// /**
