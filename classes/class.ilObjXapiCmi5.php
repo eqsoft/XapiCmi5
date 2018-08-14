@@ -658,6 +658,9 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 		//
 		// type specific fields
 		//
+        
+        return; // functions below are still not defined in ilXapiCmi5Type
+        
 		$type_fields = $this->typedef->getFieldsAssoc();
 		$type_values = $this->typedef->getInputValues();
 		$input_values = $this->getInputValues();
