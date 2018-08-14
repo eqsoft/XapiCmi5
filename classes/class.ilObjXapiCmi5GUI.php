@@ -331,12 +331,26 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
     function viewEmbedObject()
     {
         global $tpl, $ilErr, $ilUser;
-
         $this->object->trackAccess();
+        $privacy_ident = "";
+        switch ($this->object->typedef->getPrivacyIdent()) {
+            case ilXapiCmi5Type::PRIVACY_IDENT_CODE :
+            case ilXapiCmi5Type::PRIVACY_IDENT_NUMERIC :
+                $privacy_ident = $ilUser->getId();
+                break;
+            case ilXapiCmi5Type::PRIVACY_IDENT_LOGIN :
+                $privacy_ident = $ilUser->getLogin();
+                break;
+            case ilXapiCmi5Type::PRIVACY_IDENT_EMAIL :
+                $privacy_ident = $ilUser->getEmail();
+                break;
+            default :
+                $privacy_ident = $ilUser->getEmail();;
+        }
         $this->tabs_gui->activateTab('viewEmbed');
 		$my_tpl = new ilTemplate('./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/templates/default/tpl.view_embed.html', true, true);
 		$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
-		$my_tpl->setVariable('XAPI_USER_ID', $ilUser->getId());
+		$my_tpl->setVariable('XAPI_USER_ID', $privacy_ident); // ToDo: get from id types!
 		$my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname());
 		$my_tpl->setVariable('LAUNCH_KEY', $this->object->getLaunchKey());
 		$my_tpl->setVariable('LAUNCH_SECRET', $this->object->getLaunchSecret());

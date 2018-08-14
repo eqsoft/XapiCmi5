@@ -22,6 +22,11 @@ class ilXapiCmi5Type
 	const LAUNCH_TYPE_PAGE = "page";
 	const LAUNCH_TYPE_LINK = "link";
 	const LAUNCH_TYPE_EMBED = "embed";
+
+    const PRIVACY_IDENT_CODE = 0;
+    const PRIVACY_IDENT_NUMERIC = 1;
+    const PRIVACY_IDENT_LOGIN = 2;
+    const PRIVACY_IDENT_EMAIL = 3;
 	
 	private $type_id;
 	private $name;
