@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use GuzzleHttp\Psr7;
 
 class RequestFilterXapi
-{	
+{
 	public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
 	{
 		// only sniff POST and PUT requests
@@ -36,20 +36,18 @@ class RequestFilterXapi
 		}
 		return $next($request, $response);
 	}
-	
+
 	/**
 	 * should be public function in Plugin: PLUGINCLASS->modifyBody() see notes
 	 */ 
 	private function modifyBody($body) {
-		
+
 		/** 
 		 * The plugin class should provide a transformation function like PLUGINCLASS->modifyBody($body as string) (return string) 
 		 * this could also be used by cronjob requests in case of immutable lrs endpoints! But maybe we could reuse proxy classes for cronjobs too?
 		 * 
 		 */
-		
-		$anonymous_user = true;
-		
+		$anonymous_user = false;
 		$obj = json_decode($body, false);
 		//$this->_log(var_export($obj,TRUE));
 		if (is_object($obj)) {
@@ -66,12 +64,11 @@ class RequestFilterXapi
 					$obj[$i] = $this->setAnonymous($obj[$i]);
 				}
 				$this->setStatus($obj[$i]);
-			}
-			 
+			} 
 		}
 		return json_encode($obj); 
 	}
-	
+
 	/**
 	 * should be private function in Plugin
 	 */ 
@@ -90,7 +87,6 @@ class RequestFilterXapi
 		}
 		return $obj;
 	}
-	
 	/**
 	 * should be private function in Plugin
 	 * no return value, just sets the learning status of actor
@@ -117,7 +113,6 @@ class RequestFilterXapi
 			}
 		} 
 	}
-	
 	// ToDo: Logging
 	private function _log($txt) {
 		file_put_contents("log.txt",$txt."\n",FILE_APPEND);

@@ -350,8 +350,8 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         $this->tabs_gui->activateTab('viewEmbed');
 		$my_tpl = new ilTemplate('./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/templates/default/tpl.view_embed.html', true, true);
 		$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
-		$my_tpl->setVariable('XAPI_USER_ID', $privacy_ident); // ToDo: get from id types!
-		$my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname());
+		$my_tpl->setVariable('XAPI_USER_ID', $privacy_ident); 
+		$my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname()); // ToDo: get from privacy_name
 		$my_tpl->setVariable('LAUNCH_KEY', $this->object->getLaunchKey());
 		$my_tpl->setVariable('LAUNCH_SECRET', $this->object->getLaunchSecret());
 		$my_tpl->setVariable('LAUNCH_URL', $this->object->getLaunchUrl());

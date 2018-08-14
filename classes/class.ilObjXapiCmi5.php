@@ -271,7 +271,9 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	 */
 	private function fillTemplateRec($a_template, $a_maxdepth = 100) {
 		$this->initFields();
-
+        
+        return;
+        
 		foreach ($this->fields as $name => $field) {
 			$pattern = $this->typedef->getPlaceholder($name);
 			if (strpos($a_template, $pattern) !== false) {

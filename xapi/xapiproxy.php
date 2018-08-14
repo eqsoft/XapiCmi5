@@ -9,7 +9,13 @@ use Zend\Diactoros\ServerRequestFactory;
 
 require_once __DIR__.'/vendor/autoload.php';
 
-$request = ServerRequestFactory::fromGlobals();
-$response = (new App())->run($request, new Response);
-(new SapiEmitter)->emit($response);
+function handleRequest() {
+	$request = ServerRequestFactory::fromGlobals();
+	$response = (new App())->run($request, new Response);
+	(new SapiEmitter)->emit($response);
+}
+
+\XapiProxy\Ilias::initIlias();
+handleRequest();
+
 ?>
