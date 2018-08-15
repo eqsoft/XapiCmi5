@@ -45,7 +45,7 @@ class ilXapiCmi5Type
 	private $title;
 	private $description;
 	private $template;
-	private $launch_type = self::LAUNCH_TYPE_LINK;
+	private $launch_type = self::LAUNCH_TYPE_EMBED;
 	// private $meta_data_url;
 	
 	private $availability = self::AVAILABILITY_CREATE;
