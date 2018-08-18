@@ -1,17 +1,33 @@
 <?php
 
 require_once './Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/classes/class.ilXapiCmi5Type.php';
+//require_once './Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/classes/class.ilObjXapiCmi5.php';
 
 use Zend\Diactoros\ServerRequestFactory;
 use GuzzleHttp\RequestOptions;
+
 //"MzNlNDY5Nzk3OGRhMWU3MWI4ZjI5ODczN2YwZThmYTg1NGM0MzExNDphZWI2OTNiNDAwOTc3YmQxNTdlYWQzNjBmYzI5NDk1MGU5MjNlYjdi"
 function getTarget() {
+    $no_credentials = (empty($_SERVER['PHP_AUTH_USER']) && empty($_SERVER['PHP_AUTH_PW']));
+    if ($no_credentials) {
+		header('HTTP/1.1 401 Authorization Required');
+		//header('WWW-Authenticate: Basic realm="Access denied"');
+		exit;
+	}
+   
+    $client = $_SERVER['PHP_AUTH_USER'];
+    $token = $_SERVER['PHP_AUTH_PW'];
+    
+    \XapiProxy\DataService::initIlias($client,$token);
+    
     $types_data = ilXapiCmi5Type::_getTypesData()[0];
     $endpoint = $types_data['lrs_endpoint'];
     $auth = 'Basic ' . base64_encode($types_data['lrs_key'] . ':' . $types_data['lrs_secret']);
 	$target = array(  // needs validation of request before!
 		"upstream" =>  $endpoint, 
-		"authorization" => $auth
+		"authorization" => $auth,
+        "client" => $client,
+        "token" => $token
 	);
     //_log(var_export($target,TRUE));
 	return $target;
@@ -40,10 +56,15 @@ function _log($txt) {
 
 return [
     'middleware' => getMiddleware(),
+    'target' => getTarget(),
+    'request_options' => getRequestOptions(),
     \XapiProxy\Runner::class => DI\object()
         ->constructorParameter('stack', DI\get('middleware')),
     \XapiProxy\Middleware\ProxyMiddleware::class => DI\object()
-        ->constructorParameter('target', getTarget())
-        ->constructorParameter('request_options', getRequestOptions())
+        ->constructorParameter('target', DI\get('target'))
+        ->constructorParameter('request_options', DI\get('request_options')),
+    \XapiProxy\Middleware\RequestFilterXapi::class => DI\object()
+        ->constructorParameter('target', DI\get('target'))
+        
 ];
 ?>

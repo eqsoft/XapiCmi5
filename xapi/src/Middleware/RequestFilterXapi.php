@@ -1,13 +1,28 @@
 <?php
 
+
 namespace XapiProxy\Middleware;
 
+use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use GuzzleHttp\Psr7;
 
 class RequestFilterXapi
 {
+    protected $guzzle_client;
+	protected $client;
+	protected $token;
+    
+    public function __construct(Client $guzzle_client, $target)
+	{
+		$this->guzzle_client = $guzzle_client;
+		$this->client = $target["client"];
+		$this->token = $target["token"];
+		//$this->_log($this->client);
+		//$this->_log($this->token);
+	}
+    
 	public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $next)
 	{
 		// only sniff POST and PUT requests
@@ -41,12 +56,7 @@ class RequestFilterXapi
 	 * should be public function in Plugin: PLUGINCLASS->modifyBody() see notes
 	 */ 
 	private function modifyBody($body) {
-
-		/** 
-		 * The plugin class should provide a transformation function like PLUGINCLASS->modifyBody($body as string) (return string) 
-		 * this could also be used by cronjob requests in case of immutable lrs endpoints! But maybe we could reuse proxy classes for cronjobs too?
-		 * 
-		 */
+		
 		$anonymous_user = false;
 		$obj = json_decode($body, false);
 		//$this->_log(var_export($obj,TRUE));
@@ -92,7 +102,7 @@ class RequestFilterXapi
 	 * no return value, just sets the learning status of actor
 	 */ 
 	private function setStatus($obj) {
-		// is valid object!
+		require_once './Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/classes/class.ilObjXapiCmi5.php';
 		$sniff_verbs = array (
 			"http://adlnet.gov/expapi/verbs/completed" => "completed",
 			"http://adlnet.gov/expapi/verbs/passed" => "passed",
@@ -100,16 +110,26 @@ class RequestFilterXapi
 			"http://adlnet.gov/expapi/verbs/terminated" =>	"terminated",
 			"http://adlnet.gov/expapi/verbs/satisfied" =>	"satisfied"
 		);
-		$obj_id = "http://id.tincanapi.com/activity/tincan-prototypes/golf-example"; //ToDo: validate in xapi plugin classes
+		//$obj_id = "http://id.tincanapi.com/activity/tincan-prototypes/golf-example"; //ToDo: validate in xapi plugin classes
 		if (isset($obj->verb) && isset($obj->actor) && isset($obj->object)) {
 			$verb = $obj->verb->id;
 			if (array_key_exists($verb, $sniff_verbs)) {
-				// sniff verb?
-				if ($obj->object->id === $obj_id) { // how to validate obj_id??
+                // check context
+                
+                if (isset($obj->context) && isset($obj->context->contextActivities) && isset($obj->context->contextActivities->parent)) {
+                    if ($obj->object->id != $obj->context->contextActivities->parent) {
+                        $this->_log("no root context: " . $obj->object->id . " ...ignored verb " . $verb);
+                        return;
+                    }
+                }
+                /*
+				if ($obj->object->id === $obj_id) { 
 					//ToDo: set learning status in Plugin!
 					//_log("id: " . $obj_id);
 					//_log("verb: " . $verb);
 				}
+                */
+                \ilObjXapiCmi5::handleLPStatusFromProxy($this->client, $this->token, $verb);
 			}
 		} 
 	}

@@ -9,13 +9,13 @@ use GuzzleHttp\Psr7;
 
 class ProxyMiddleware
 {
-	protected $client;
+	protected $guzzle_client;
 	protected $upstream;
 	protected $authorization;
 
-	public function __construct(Client $client, $target, $request_options = [])
+	public function __construct(Client $guzzle_client, $target, $request_options = [])
 	{
-		$this->client = $client;
+		$this->guzzle_client = $guzzle_client;
 		$this->upstream = $target["upstream"];
 		$this->authorization = $target["authorization"];
 		//$this->_log($this->upstream);
@@ -41,7 +41,7 @@ class ProxyMiddleware
 				'set_headers' => array('Authorization' => $this->authorization)
 			);
 			$request = \GuzzleHttp\Psr7\modify_request($request, $changes);
-			$response = $this->client->send($request,$this->request_options);
+			$response = $this->guzzle_client->send($request,$this->request_options);
 			return $next($request, $response);
 		}
 		else {

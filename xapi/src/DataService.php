@@ -4,25 +4,14 @@ namespace XapiProxy;
 
 use XapiProxy\ilInitialisation as ilInitialisation;
 
-class Ilias
+class DataService
 {
-    
-    /**
-    * Read and return the default client-ID from the ilias.ini file
-    * @return string
-    */
-    protected static function getIniDefaultClientId() {
-        require_once('./Services/Init/classes/class.ilIniFile.php');
-        $ini = new \ilIniFile('./ilias.ini.php');
-        $ini->read();
-        return $ini->readVariable("clients", "default");
-    }
-
-    public static function initIlias($cient = null) {
-        define ("CLIENT_ID", self::getIniDefaultClientId());
+    public static function initIlias($client_id, $client_token) {
+        define ("CLIENT_ID", $client_id);
         ilInitialisation::initIliasIniFile();
         ilInitialisation::initClientIniFile();
         ilInitialisation::initDatabase();
+        //ilInitialisation::initLog();
     }
 }
 
@@ -53,6 +42,7 @@ class ilInitialisation extends \ilInitialisation {
     */
     public static function initDatabase() {
         if (!isset($GLOBALS['ilDB'])) {
+            parent::initGlobal("ilBench", "ilBenchmark", "./Services/Utilities/classes/class.ilBenchmark.php");
             parent::initDatabase();
         }
     }
@@ -80,4 +70,5 @@ class ilInitialisation extends \ilInitialisation {
             parent::initClientIniFile();
         }
     }
+    
 }

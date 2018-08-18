@@ -1031,6 +1031,16 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 			ilXapiCmi5LPStatus::trackAccess($ilUser->getId(),$this->getId(), $this->getRefId());
 		}
 	}
+    
+    /******* TESTING *******/
+    
+    public static function handleLPStatusFromProxy($client, $token, $status) {
+        self::_log("handleLPStatusFromProxy: ". $client . ":" . $token . ":" . $status);
+    }
+    
+    private static function _log($txt) {
+        file_put_contents("xapilog.txt",$txt."\n",FILE_APPEND);
+    }
 }
 
 ?>

@@ -15,7 +15,6 @@ function handleRequest() {
 	(new SapiEmitter)->emit($response);
 }
 
-\XapiProxy\Ilias::initIlias();
 handleRequest();
 
 ?>
