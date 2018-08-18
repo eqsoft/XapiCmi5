@@ -215,152 +215,152 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	public function getShowDebug() {
 		return $this->show_debug;
 	}
-	/**
-	 * set a return url for coming back from the content
-	 * 
-	 * @param string	return url
-	 */
-	public function setReturnUrl($a_return_url) {
-		$this->return_url = $a_return_url;
-	}
+	// /**
+	 // * set a return url for coming back from the content
+	 // * 
+	 // * @param string	return url
+	 // */
+	// public function setReturnUrl($a_return_url) {
+		// $this->return_url = $a_return_url;
+	// }
 
-	/**
-	 * get a return url for coming back from the content
-	 * 
-	 * @return string	return url
-	 */
-	public function getReturnUrl() {
-		return $this->return_url;
-	}
+	// /**
+	 // * get a return url for coming back from the content
+	 // * 
+	 // * @return string	return url
+	 // */
+	// public function getReturnUrl() {
+		// return $this->return_url;
+	// }
 
-	/**
-	 * get the URL to lauch the assessment
-	 *
-	 * @access public
-	 */
-	public function getLaunchLink() {
-		return $this->fillTemplateRec($this->typedef->getTemplate());
-	}
+	// /**
+	 // * get the URL to lauch the assessment
+	 // *
+	 // * @access public
+	 // */
+	// public function getLaunchLink() {
+		// return $this->fillTemplateRec($this->typedef->getTemplate());
+	// }
 
-	/**
-	 * get the code to embed the object on a page
-	 *
-	 * @access public
-	 */
-	public function getEmbedCode() {
-		return $this->fillTemplateRec($this->typedef->getTemplate());
-	}
+	// /**
+	 // * get the code to embed the object on a page
+	 // *
+	 // * @access public
+	 // */
+	// public function getEmbedCode() {
+		// return $this->fillTemplateRec($this->typedef->getTemplate());
+	// }
 
-	/**
-	 * get the code of a page to show
-	 *
-	 * @access public
-	 */
-	public function getPageCode() {
-		return $this->fillTemplateRec($this->typedef->getTemplate());
-	}
+	// /**
+	 // * get the code of a page to show
+	 // *
+	 // * @access public
+	 // */
+	// public function getPageCode() {
+		// return $this->fillTemplateRec($this->typedef->getTemplate());
+	// }
 
 
-	/**
-	 * Fill a template recursively with field values
-	 * Placeholders are like {FIELD_NAME}
-	 * Replacement is case insensitive
-	 *
-	 * @param	string  template
-	 * @param	int	 maximum recursion depth (default 100, stops at 0)
-	 */
-	private function fillTemplateRec($a_template, $a_maxdepth = 100) {
-		$this->initFields();
+	// /**
+	 // * Fill a template recursively with field values
+	 // * Placeholders are like {FIELD_NAME}
+	 // * Replacement is case insensitive
+	 // *
+	 // * @param	string  template
+	 // * @param	int	 maximum recursion depth (default 100, stops at 0)
+	 // */
+	// private function fillTemplateRec($a_template, $a_maxdepth = 100) {
+		// $this->initFields();
         
-        return;
+        // return;
         
-		foreach ($this->fields as $name => $field) {
-			$pattern = $this->typedef->getPlaceholder($name);
-			if (strpos($a_template, $pattern) !== false) {
-				$value = $this->fillField($field, $a_maxdepth);
+		// foreach ($this->fields as $name => $field) {
+			// $pattern = $this->typedef->getPlaceholder($name);
+			// if (strpos($a_template, $pattern) !== false) {
+				// $value = $this->fillField($field, $a_maxdepth);
 
-				// replace the placeholder in the template
-				$a_template = str_replace($pattern, $value, $a_template);
-			}
-		}
-		return $a_template;
-	}
+				// // replace the placeholder in the template
+				// $a_template = str_replace($pattern, $value, $a_template);
+			// }
+		// }
+		// return $a_template;
+	// }
 
-	/**
-	 * Fill a field and return its value
-	 * 
-	 * @param	array	field
-	 * @param	int		maximum recoursion depth
-	 * @return 	mixed	field value (depending on type)
-	 */
-	private function fillField($a_field, $a_maxdepth = 100) {
-		// check recursion or existing values   	
-		if (0 > $a_maxdepth--) {
-			return 'max depth reached!';
-		} elseif (isset($a_field['field_value'])) {
-			//echo "<br />FOUND: ".  $a_field['field_name'] . " = ";
-			//var_dump($a_field['field_value']);
+	// /**
+	 // * Fill a field and return its value
+	 // * 
+	 // * @param	array	field
+	 // * @param	int		maximum recoursion depth
+	 // * @return 	mixed	field value (depending on type)
+	 // */
+	// private function fillField($a_field, $a_maxdepth = 100) {
+		// // check recursion or existing values   	
+		// if (0 > $a_maxdepth--) {
+			// return 'max depth reached!';
+		// } elseif (isset($a_field['field_value'])) {
+			// //echo "<br />FOUND: ".  $a_field['field_name'] . " = ";
+			// //var_dump($a_field['field_value']);
 
-			return $a_field['field_value'];
-		}
+			// return $a_field['field_value'];
+		// }
 
-		// get field values that are not yet known
-		switch ($a_field['field_type']) {
-			case ilXapiCmi5Type::FIELDTYPE_ILIAS:
-				$value = $this->fillIliasField($a_field);
-				break;
+		// // get field values that are not yet known
+		// switch ($a_field['field_type']) {
+			// case ilXapiCmi5Type::FIELDTYPE_ILIAS:
+				// $value = $this->fillIliasField($a_field);
+				// break;
 
-			case ilXapiCmi5Type::FIELDTYPE_CALCULATED:
-				$value = $this->fillCalculatedField($a_field, $a_maxdepth);
-				break;
+			// case ilXapiCmi5Type::FIELDTYPE_CALCULATED:
+				// $value = $this->fillCalculatedField($a_field, $a_maxdepth);
+				// break;
 
-			case ilXapiCmi5Type::FIELDTYPE_TEMPLATE:
-				$value = $this->fillTemplateRec($a_field['template'], $a_maxdepth);
-				break;
-		}
+			// case ilXapiCmi5Type::FIELDTYPE_TEMPLATE:
+				// $value = $this->fillTemplateRec($a_field['template'], $a_maxdepth);
+				// break;
+		// }
 
-		// apply an encoding to the value
-		$value = ilXapiCmi5Encodings::_applyEncoding($a_field['encoding'], $value);
+		// // apply an encoding to the value
+		// $value = ilXapiCmi5Encodings::_applyEncoding($a_field['encoding'], $value);
 
 
-		// save the value so that it is not re-calculated
-		$this->fields[$a_field['field_name']]['field_value'] = $value;
+		// // save the value so that it is not re-calculated
+		// $this->fields[$a_field['field_name']]['field_value'] = $value;
 
-		//echo "<br />FILLED: ".  $a_field['field_name'] . " = ";
-		//var_dump($value);
+		// //echo "<br />FILLED: ".  $a_field['field_name'] . " = ";
+		// //var_dump($value);
 
-		return $value;
-	}
+		// return $value;
+	// }
 
-	/**
-	 * Apply a function with parameters to fill a field
-	 * 
-	 * @param $a_field
-	 * @param $a_maxdepth
-	 * @return unknown_type
-	 */
-	private function fillCalculatedField($a_field, $a_maxdepth) {
-		// process the function parameters
-		$parsed_params = array();
-		foreach ($a_field['params'] as $param_name => $param_value) {
-			foreach ($this->fields as $field_name => $field) {
-				if ($param_value == $this->typedef->getPlaceholder($field_name)) {
-					$param_value = $this->fillField($field, $a_maxdepth);
-				}
+	// /**
+	 // * Apply a function with parameters to fill a field
+	 // * 
+	 // * @param $a_field
+	 // * @param $a_maxdepth
+	 // * @return unknown_type
+	 // */
+	// private function fillCalculatedField($a_field, $a_maxdepth) {
+		// // process the function parameters
+		// $parsed_params = array();
+		// foreach ($a_field['params'] as $param_name => $param_value) {
+			// foreach ($this->fields as $field_name => $field) {
+				// if ($param_value == $this->typedef->getPlaceholder($field_name)) {
+					// $param_value = $this->fillField($field, $a_maxdepth);
+				// }
 
-				$parsed_params[$param_name] = $param_value;
-			}
-		}
+				// $parsed_params[$param_name] = $param_value;
+			// }
+		// }
 
-		// apply the function
-		require_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/classes/class.ilXapiCmi5Functions.php");
-		$value = ilXapiCmi5Functions::applyFunction($a_field['function'], $parsed_params);
+		// // apply the function
+		// require_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/classes/class.ilXapiCmi5Functions.php");
+		// $value = ilXapiCmi5Functions::applyFunction($a_field['function'], $parsed_params);
 
-		// save the value so that it is not re-calculated
-		$this->fields[$a_field['field_name']]['field_value'] = $value;
+		// // save the value so that it is not re-calculated
+		// $this->fields[$a_field['field_name']]['field_value'] = $value;
 
-		return $value;
-	}
+		// return $value;
+	// }
 
 	/**
 	 * create an access token
@@ -482,9 +482,9 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 				$value = ILIAS_HTTP_PATH . "/Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/event_log.php";
 				break;
 
-			case "ILIAS_RETURN_URL":
-				$value = $this->getReturnUrl();
-				break;
+			// case "ILIAS_RETURN_URL":
+				// $value = $this->getReturnUrl();
+				// break;
 
 			case "ILIAS_RESULT_URL":
 				if ($this->getLPMode() == self::LP_ACTIVE)
@@ -1040,7 +1040,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
     
     private static function _log($txt) {
         file_put_contents("xapilog.txt",$txt."\n",FILE_APPEND);
-    }
+	}
 }
 
 ?>

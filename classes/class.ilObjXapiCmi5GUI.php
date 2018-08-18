@@ -95,13 +95,13 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
     {
     	global $ilErr, $ilCtrl, $ilTabs;
 
-		if (!$this->checkCreationMode())
-		{
-			// set a return URL
-			// IMPORTANT: the last parameter prevents an encoding of & to &amp;
-			// Otherwise the OAuth signatore is calculated wrongly!
-			$this->object->setReturnURL(ILIAS_HTTP_PATH . "/". $ilCtrl->getLinkTarget($this, "view", "", true));
-		}
+		// if (!$this->checkCreationMode())
+		// {
+			// // set a return URL
+			// // IMPORTANT: the last parameter prevents an encoding of & to &amp;
+			// // Otherwise the OAuth signatore is calculated wrongly!
+			// $this->object->setReturnURL(ILIAS_HTTP_PATH . "/". $ilCtrl->getLinkTarget($this, "view", "", true));
+		// }
 
         switch ($cmd)
         {
@@ -296,24 +296,24 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 
         switch ($this->object->typedef->getLaunchType())
         {
-            case ilXapiCmi5Type::LAUNCH_TYPE_LINK:
-                $this->object->trackAccess();
-                ilUtil::redirect($this->object->getLaunchLink());
-                break;
+            // case ilXapiCmi5Type::LAUNCH_TYPE_LINK:
+                // $this->object->trackAccess();
+                // ilUtil::redirect($this->object->getLaunchLink());
+                // break;
 
-            case ilXapiCmi5Type::LAUNCH_TYPE_PAGE:
-                $this->ctrl->redirect($this, "viewPage");
-                break;
+            // case ilXapiCmi5Type::LAUNCH_TYPE_PAGE:
+                // $this->ctrl->redirect($this, "viewPage");
+                // break;
 
             case ilXapiCmi5Type::LAUNCH_TYPE_EMBED:
-    			if ($_GET['lti_msg'])
-    			{
-    				ilUtil::sendInfo(ilUtil::stripSlashes($_GET['lti_msg']), true);
-    			}
-    			if ($_GET['lti_errormsg'])
-    			{
-    				ilUtil::sendFailure(ilUtil::stripSlashes($_GET['lti_errormsg']), true);
-    			}
+    			// if ($_GET['lti_msg'])
+    			// {
+    				// ilUtil::sendInfo(ilUtil::stripSlashes($_GET['lti_msg']), true);
+    			// }
+    			// if ($_GET['lti_errormsg'])
+    			// {
+    				// ilUtil::sendFailure(ilUtil::stripSlashes($_GET['lti_errormsg']), true);
+    			// }
     			$this->ctrl->redirect($this, "viewEmbed");
                 break;
 
@@ -366,26 +366,27 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 			$my_tpl->setVariable('LRS_ENDPOINT', $this->object->typedef->getLrsEndpoint());
 			$my_tpl->setVariable('LRS_KEY', $this->object->typedef->getLrsKey());
 			$my_tpl->setVariable('LRS_SECRET', $this->object->typedef->getLrsSecret());
+			$my_tpl->setVariable('LRS_USER_ID', $privacy_ident); 
+			$my_tpl->setVariable('LRS_USER_NAME', $ilUser->getFullname()); // ToDo: get from privacy_name
 			$my_tpl->parseCurrentBlock();
 		}
 
 		$tpl->setContent($my_tpl->get());
-        // $this->tpl->setVariable('ADM_CONTENT', $this->object->getEmbedCode());
     }
 
-    /**
-     * view the object as a page
-     *
-     * @access public
-     */
-    function viewPageObject()
-    {
-        global $ilErr;
+    // /**
+     // * view the object as a page
+     // *
+     // * @access public
+     // */
+    // function viewPageObject()
+    // {
+        // global $ilErr;
 
-        $this->object->trackAccess();
-        echo $this->object->getPageCode();
-        exit;
-    }
+        // $this->object->trackAccess();
+        // echo $this->object->getPageCode();
+        // exit;
+    // }
 
     /**
      * create new object form
