@@ -115,6 +115,6 @@ class RequestFilterXapi
 	}
 	// ToDo: Logging
 	private function _log($txt) {
-		file_put_contents("log.txt",$txt."\n",FILE_APPEND);
+		file_put_contents("xapilog.txt",$txt."\n",FILE_APPEND);
 	}
 }
