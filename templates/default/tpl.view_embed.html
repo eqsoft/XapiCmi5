@@ -30,4 +30,17 @@ function launchxapi() {
 <input id="startXapiObject" class="btn btn-default btn-sm" type="button" onclick="launchxapi()" value="Start" /><br/>
 <iframe name="basicXAPILaunchFrame"  id="basicXAPILaunchFrame" src="" width="1" height="1" scrolling="auto" frameborder="0" transparency></iframe>
 
-{DEBUG_EMBED}
+<!-- BEGIN debug_embed -->
+<script type="text/javascript">
+function ConfigLRS() {
+    "use strict";
+}
+ConfigLRS.endpoint = '{LRS_ENDPOINT}';
+ConfigLRS.authUser = '{LRS_KEY}';
+ConfigLRS.authPassword = '{LRS_SECRET}';
+ConfigLRS.actor = { "mbox":"{XAPI_USER_ID}", "name":"{XAPI_USER_NAME}" }; 
+</script> 
+<iframe name="XAPIDebugFrame" id="XAPIDebugFrame" 
+	src="./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/xapi/StatementViewer/index.html" 
+	width="1000" height="600" scrolling="auto" frameborder="0" transparency></iframe>
+<!-- END debug_embed -->

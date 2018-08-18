@@ -360,7 +360,15 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 		$my_tpl->setVariable('WIN_LAUNCH_HEIGHT', '700');
 		$my_tpl->setVariable('FRAME_LAUNCH_WIDTH', '1000');
 		$my_tpl->setVariable('FRAME_LAUNCH_HEIGHT', '700');
-		$my_tpl->setVariable('DEBUG_EMBED','');
+
+		if ($this->object->getShowDebug() == true) {
+			$my_tpl->setCurrentBlock("debug_embed");
+			$my_tpl->setVariable('LRS_ENDPOINT', $this->object->typedef->getLrsEndpoint());
+			$my_tpl->setVariable('LRS_KEY', $this->object->typedef->getLrsKey());
+			$my_tpl->setVariable('LRS_SECRET', $this->object->typedef->getLrsSecret());
+			$my_tpl->parseCurrentBlock();
+		}
+
 		$tpl->setContent($my_tpl->get());
         // $this->tpl->setVariable('ADM_CONTENT', $this->object->getEmbedCode());
     }
@@ -657,9 +665,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 		$this->object->setActivityId($this->form->getInput("activity_id"));
 		$this->object->setLaunchKey($this->form->getInput("launch_key"));
 		$this->object->setLaunchSecret($this->form->getInput("launch_secret"));
-		if ($this->form->getInput("show_debug")) {
-			$this->object->setShowDebug($this->form->getInput("show_debug"));
-		}
+		$this->object->setShowDebug($this->form->getInput("show_debug"));
         $this->object->update();
     }
     
