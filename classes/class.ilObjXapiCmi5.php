@@ -1100,7 +1100,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 		global $ilUser;
 
 		// track access for learning progress
-		if ($ilUser->getId() != ANONYMOUS_USER_ID and $this->getLPMode() == self::LP_ACTIVE)
+		if ($ilUser->getId() != ANONYMOUS_USER_ID and $this->getLPMode() >0)
 		{
 			$this->plugin->includeClass('class.ilXapiCmi5LPStatus.php');
 			ilXapiCmi5LPStatus::trackAccess($ilUser->getId(),$this->getId(), $this->getRefId());
