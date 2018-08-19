@@ -437,3 +437,38 @@ if(!$ilDB->tableExists('xxcf_data_token'))
 		));
 	}
 ?>
+<#12>
+<?php
+	if ( !$ilDB->tableColumnExists('xxcf_data_settings', 'privacy_ident') ) {
+		$ilDB->addTableColumn('xxcf_data_settings', 'privacy_ident', array(
+				'type' => 'integer',
+				'length' => 2,
+				'notnull' => true,
+				'default' => 0
+		));
+	}
+	if ( !$ilDB->tableColumnExists('xxcf_data_settings', 'privacy_name') ) {
+		$ilDB->addTableColumn('xxcf_data_settings', 'privacy_name', array(
+				'type' => 'integer',
+				'length' => 2,
+				'notnull' => true,
+				'default' => 0
+		));
+	}
+	if ( !$ilDB->tableColumnExists('xxcf_user_mapping', 'content_name') ) {
+		$ilDB->addTableColumn('xxcf_user_mapping', 'content_name', array(
+				'type' => 'text',
+				'length' => 255,
+				'notnull' => true,
+				'default' => ''
+		));
+	}
+	if ( !$ilDB->tableColumnExists('xxcf_user_mapping', 'content_mail') ) {
+		$ilDB->addTableColumn('xxcf_user_mapping', 'content_mail', array(
+				'type' => 'text',
+				'length' => 255,
+				'notnull' => true
+		));
+	}
+
+?>

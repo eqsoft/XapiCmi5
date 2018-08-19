@@ -42,6 +42,8 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	protected $lp_threshold = 0.5;
 	protected $show_debug = 0;
 	protected $use_fetch = 0;
+	protected $privacy_ident = ilXapiCmi5Type::PRIVACY_IDENT_EMAIL;
+	protected $privacy_name;
 
 	/**
 	 * Return URL: This is a run-time variable set by the GUI and not stored
@@ -225,6 +227,29 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	public function getUseFetch() {
 		return $this->use_fetch;
 	}
+	
+
+	public function setPrivacyIdent($a_option)
+	{
+		$this->privacy_ident = $a_option;
+	}
+	
+	public function getPrivacyIdent()
+	{
+		return $this->privacy_ident;
+	}
+
+
+	public function setPrivacyName($a_option)
+	{
+		$this->privacy_name = $a_option;
+	}
+	
+	public function getPrivacyName()
+	{
+		return $this->privacy_name;
+	}
+
 	// /**
 	 // * set a return url for coming back from the content
 	 // * 
@@ -795,6 +820,8 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 			'use_fetch' => array('integer', $this->getUseFetch()),
 			// 'instructions' => array('text', $this->getInstructions()),
 			// 'meta_data_xml' => array('text', $this->getMetaDataXML()),
+			'privacy_ident' => array('integer', $this->getPrivacyIdent()),
+			'privacy_name' => array('integer', $this->getPrivacyName()),
 			'lp_mode' => array('integer', $this->getLPMode())
 
 			)
@@ -887,6 +914,8 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 			// $this->setLaunchSecret($row->launch_secret);
 			$this->setShowDebug($row->show_debug);
 			$this->setUseFetch($row->use_fetch);
+			$this->setPrivacyIdent($row->privacy_ident);
+			$this->setPrivacyName($row->privacy_name);
 			$this->setLPMode($row->lp_mode);
 			// $this->setLPThreshold($row->lp_threshold);
 		}

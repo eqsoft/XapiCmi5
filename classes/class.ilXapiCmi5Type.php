@@ -28,9 +28,9 @@ class ilXapiCmi5Type
     const PRIVACY_IDENT_LOGIN = 2;
     const PRIVACY_IDENT_EMAIL = 3;
 
-    const FIELDTYPE_ILIAS = 0;
-    const FIELDTYPE_CALCULATED = 1;
-    const FIELDTYPE_TEMPLATE = 2;
+    // const FIELDTYPE_ILIAS = 0;
+    // const FIELDTYPE_CALCULATED = 1;
+    // const FIELDTYPE_TEMPLATE = 2;
 
 	private $type_id;
 	private $name;

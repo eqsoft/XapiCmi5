@@ -334,7 +334,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 		$token = $this->object->fillToken();
         $this->object->trackAccess();
         $privacy_ident = "";
-        switch ($this->object->typedef->getPrivacyIdent()) {
+        switch ($this->object->getPrivacyIdent()) {
             case ilXapiCmi5Type::PRIVACY_IDENT_CODE :
             case ilXapiCmi5Type::PRIVACY_IDENT_NUMERIC :
                 $privacy_ident = $ilUser->getId();
@@ -629,6 +629,38 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 			}        
           	$this->form->addItem($item);
 
+			$item = new ilFormSectionHeaderGUI();
+			$item->setTitle($this->lng->txt("privacy_options"));
+			$this->form->addItem($item);
+
+			$item = new ilRadioGroupInputGUI($this->txt('content_privacy_ident'), 'privacy_ident');
+			$op = new ilRadioOption($this->txt('conf_privacy_ident_0'), 0);
+			$item->addOption($op);
+			$op = new ilRadioOption($this->txt('conf_privacy_ident_1'), 1);
+			$item->addOption($op);
+			$op = new ilRadioOption($this->txt('conf_privacy_ident_2'), 2);
+			$item->addOption($op);
+			$op = new ilRadioOption($this->txt('conf_privacy_ident_3'), 3);
+			$item->addOption($op);
+			$item->setValue($a_values['privacy_ident']);
+			$item->setInfo($this->txt('info_privacy_ident'));
+			$item->setRequired(false);
+			$this->form->addItem($item);
+
+			$item = new ilRadioGroupInputGUI($this->txt('content_privacy_name'), 'privacy_name');
+			$op = new ilRadioOption($this->txt('conf_privacy_name_0'), 0);
+			$item->addOption($op);
+			$op = new ilRadioOption($this->txt('conf_privacy_name_1'), 1);
+			$item->addOption($op);
+			$op = new ilRadioOption($this->txt('conf_privacy_name_2'), 2);
+			$item->addOption($op);
+			$op = new ilRadioOption($this->txt('conf_privacy_name_3'), 3);
+			$item->addOption($op);
+			$item->setValue($a_values['privacy_name']);
+			$item->setInfo($this->txt('info_privacy_name'));
+			$item->setRequired(false);
+			$this->form->addItem($item);
+
 
             $this->form->setTitle($this->lng->txt('settings'));
             $this->form->addCommandButton("update", $this->lng->txt("save"));
@@ -645,24 +677,27 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
      */
     protected function loadFormValues()
     {
-        $values = array();
+		$values = array();
 
-        $values['title'] = $this->object->getTitle();
-        $values['description'] = $this->object->getDescription();
-        $values['type_id'] = $this->object->getTypeId();
-        $values['type'] = $this->object->typedef->getTitle();
-        $values['instructions'] = $this->object->getInstructions();
-        if ($this->object->getAvailabilityType() == ilObjXapiCmi5::ACTIVATION_UNLIMITED)
-        {
-            $values['online'] = '1';
-        }
-        $values['launch_url'] = $this->object->getLaunchUrl();
-        $values['activity_id'] = $this->object->getActivityId();
-        // $values['launch_key'] = $this->object->getLaunchKey();
-        // $values['launch_secret'] = $this->object->getLaunchSecret();
-        $values['show_debug'] = $this->object->getShowDebug();
-        $values['use_fetch'] = $this->object->getUseFetch();
-        return $values;
+		$values['title'] = $this->object->getTitle();
+		$values['description'] = $this->object->getDescription();
+		$values['type_id'] = $this->object->getTypeId();
+		$values['type'] = $this->object->typedef->getTitle();
+		$values['instructions'] = $this->object->getInstructions();
+		if ($this->object->getAvailabilityType() == ilObjXapiCmi5::ACTIVATION_UNLIMITED)
+		{
+			$values['online'] = '1';
+		}
+		$values['launch_url'] = $this->object->getLaunchUrl();
+		$values['activity_id'] = $this->object->getActivityId();
+		// $values['launch_key'] = $this->object->getLaunchKey();
+		// $values['launch_secret'] = $this->object->getLaunchSecret();
+		$values['show_debug'] = $this->object->getShowDebug();
+		$values['use_fetch'] = $this->object->getUseFetch();
+		$values['privacy_ident'] = $this->object->getPrivacyIdent();
+		$values['privacy_name'] = $this->object->getPrivacyName();
+
+		return $values;
     }
 
     
@@ -687,6 +722,8 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 		// $this->object->setLaunchSecret($this->form->getInput("launch_secret"));
 		$this->object->setShowDebug($this->form->getInput("show_debug"));
 		$this->object->setUseFetch($this->form->getInput("use_fetch"));
+		$this->object->setPrivacyIdent($this->form->getInput("privacy_ident"));
+		$this->object->setPrivacyName($this->form->getInput("privacy_name"));
         $this->object->update();
     }
     
