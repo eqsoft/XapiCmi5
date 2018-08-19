@@ -2,12 +2,18 @@
 
 namespace XapiProxy;
 
-use XapiProxy\ilInitialisation as ilInitialisation;
+use \XapiProxy\ilInitialisation as ilInitialisation;
+use \XapiProxy\ilUtil as ilUtil;
 
 class DataService
 {
     public static function initIlias($client_id, $client_token) {
         define ("CLIENT_ID", $client_id);
+        define('IL_COOKIE_HTTPONLY', true); // Default Value
+		define('IL_COOKIE_EXPIRE', 0);
+		define('IL_COOKIE_PATH', '/');
+		define('IL_COOKIE_DOMAIN', '');
+        require_once "./Services/Utilities/classes/class.ilUtil.php";
         ilInitialisation::initIliasIniFile();
         ilInitialisation::initClientIniFile();
         ilInitialisation::initDatabase();
