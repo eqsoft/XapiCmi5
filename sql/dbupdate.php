@@ -406,3 +406,23 @@ if(!$ilDB->tableExists('xxcf_data_token'))
 			'notnull' => false)
 	);
 ?>
+<#10>
+<?php
+	if ( !$ilDB->tableColumnExists('xxcf_data_token', 'obj_id') ) {
+		$ilDB->addTableColumn('xxcf_data_token', 'obj_id', array(
+				'type' => 'integer',
+				'length' => 4,
+				'notnull' => true,
+				'default' => 0
+		));
+	}
+	if ( !$ilDB->tableColumnExists('xxcf_data_token', 'usr_id') ) {
+		$ilDB->addTableColumn('xxcf_data_token', 'usr_id', array(
+				'type' => 'integer',
+				'length' => 4,
+				'notnull' => true,
+				'default' => 0
+		));
+	}
+
+?>

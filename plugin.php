@@ -15,7 +15,7 @@
 $id = "xxcf";
  
 // code version; must be changed for all code changes
-define('xxcf_version', '0.1.2');
+define('xxcf_version', '0.1.3');
 $version = xxcf_version;
  
 // ilias min and max version; must always reflect the versions that should
