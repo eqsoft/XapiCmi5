@@ -22,7 +22,18 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	const ACTIVATION_UNLIMITED = 1;
 
 	const LP_INACTIVE = 0;
-	const LP_ACTIVE = 1;
+	// const LP_InProgress = 2;
+	const LP_Passed = 1;
+	const LP_Completed = 2;
+	const LP_CompletedAndPassed = 3;
+	const LP_CompletedOrPassed = 4;
+	const LP_UseScore = 8;
+	const LP_NotApplicable = 99;
+	
+	// const LP_Failed = 3;
+	
+	
+	// const LP_ACTIVE = 1;
 
 	/**
 	 * Content Type definition (object)
@@ -248,6 +259,11 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	public function getPrivacyName()
 	{
 		return $this->privacy_name;
+	}
+	
+	public function getLPUseScore()
+	{
+		if ($lp_mode != self::LP_NotApplicable && $lp_mode % self::LP_UseScore == 1) return 1;
 	}
 
 	// /**
