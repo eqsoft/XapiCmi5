@@ -355,7 +355,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 		$my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname()); // ToDo: get from privacy_name
 		if ($this->object->getUseFetch() == true) {
 			$my_tpl->setCurrentBlock("fetch");
-			$my_tpl->setVariable('REF_ID', $this->object->getId());
+			$my_tpl->setVariable('REF_ID', $this->object->getRefId());
 			$my_tpl->parseCurrentBlock();
 		} else {
 			$my_tpl->setCurrentBlock("no_fetch");
