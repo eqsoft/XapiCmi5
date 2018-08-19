@@ -592,98 +592,98 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	/**
 	 * initialize the fields for template processing
 	 */
-	private function initFields() {
-		global $ilUser, $ilias, $ilSetting;
+	// private function initFields() {
+		// global $ilUser, $ilias, $ilSetting;
 
-		if (is_array($this->fields)) {
-			return;
-		}
-		$this->fields = array();
+		// if (is_array($this->fields)) {
+			// return;
+		// }
+		// $this->fields = array();
 
 
-		//
-		// ILIAS fields (type and encoding are commmon to all)
-		//
-		$ilias_names = array(
-			// object information
-			'ILIAS_REF_ID',
-			'ILIAS_TITLE',
-			'ILIAS_DESCRIPTION',
-			'ILIAS_INSTRUCTIONS',
-			// object context
-			'ILIAS_CONTEXT_ID',
-			'ILIAS_CONTEXT_TYPE',
-			'ILIAS_CONTEXT_TITLE',
-			// call-time imformation
-			// 'ID',
-			'ILIAS_REMOTE_ADDR',
-			'ILIAS_TIME',
-			'ILIAS_TIMESTAMP',
-			'ILIAS_SESSION_ID',
-			'ILIAS_TOKEN',
-			'ILIAS_RESULT_ID',
-			// service urls
-			'ILIAS_CALLBACK_URL',
-			'ILIAS_EVENT_LOG_URL',
-			'ILIAS_RETURN_URL',
-			'ILIAS_RESULT_URL',
-			// user information
-			'ILIAS_USER_ID',
-			'ILIAS_USER_CODE',
-			'ILIAS_USER_LOGIN',
-			'ILIAS_USER_FIRSTNAME',
-			'ILIAS_USER_LASTNAME',
-			'ILIAS_USER_FULLNAME',
-			'ILIAS_USER_EMAIL',
-			'ILIAS_USER_IMAGE',
-			'ILIAS_USER_LANG',
-			'ILIAS_USER_WRITE_ACCESS',
-			// platform information
-			'ILIAS_VERSION',
-			'ILIAS_CONTACT_EMAIL',
-			'ILIAS_CLIENT_ID',
-			'ILIAS_HTTP_PATH',
-			'ILIAS_LMS_URL',
-			'ILIAS_LMS_GUID',
-			'ILIAS_LMS_NAME',
-			'ILIAS_LMS_DESCRIPTION',
-		);
-		foreach ($ilias_names as $name) {
-			$field = array();
-			$field['field_name'] = $name;
-			$field['field_type'] = ilXapiCmi5Type::FIELDTYPE_ILIAS;
-			$field['encoding'] = '';
+		// //
+		// // ILIAS fields (type and encoding are commmon to all)
+		// //
+		// $ilias_names = array(
+			// // object information
+			// 'ILIAS_REF_ID',
+			// 'ILIAS_TITLE',
+			// 'ILIAS_DESCRIPTION',
+			// 'ILIAS_INSTRUCTIONS',
+			// // object context
+			// 'ILIAS_CONTEXT_ID',
+			// 'ILIAS_CONTEXT_TYPE',
+			// 'ILIAS_CONTEXT_TITLE',
+			// // call-time imformation
+			// // 'ID',
+			// 'ILIAS_REMOTE_ADDR',
+			// 'ILIAS_TIME',
+			// 'ILIAS_TIMESTAMP',
+			// 'ILIAS_SESSION_ID',
+			// 'ILIAS_TOKEN',
+			// 'ILIAS_RESULT_ID',
+			// // service urls
+			// 'ILIAS_CALLBACK_URL',
+			// 'ILIAS_EVENT_LOG_URL',
+			// 'ILIAS_RETURN_URL',
+			// 'ILIAS_RESULT_URL',
+			// // user information
+			// 'ILIAS_USER_ID',
+			// 'ILIAS_USER_CODE',
+			// 'ILIAS_USER_LOGIN',
+			// 'ILIAS_USER_FIRSTNAME',
+			// 'ILIAS_USER_LASTNAME',
+			// 'ILIAS_USER_FULLNAME',
+			// 'ILIAS_USER_EMAIL',
+			// 'ILIAS_USER_IMAGE',
+			// 'ILIAS_USER_LANG',
+			// 'ILIAS_USER_WRITE_ACCESS',
+			// // platform information
+			// 'ILIAS_VERSION',
+			// 'ILIAS_CONTACT_EMAIL',
+			// 'ILIAS_CLIENT_ID',
+			// 'ILIAS_HTTP_PATH',
+			// 'ILIAS_LMS_URL',
+			// 'ILIAS_LMS_GUID',
+			// 'ILIAS_LMS_NAME',
+			// 'ILIAS_LMS_DESCRIPTION',
+		// );
+		// foreach ($ilias_names as $name) {
+			// $field = array();
+			// $field['field_name'] = $name;
+			// $field['field_type'] = ilXapiCmi5Type::FIELDTYPE_ILIAS;
+			// $field['encoding'] = '';
 
-			$this->fields[$field['field_name']] = $field;
-		}
+			// $this->fields[$field['field_name']] = $field;
+		// }
 
-		//
-		// type specific fields
-		//
+		// //
+		// // type specific fields
+		// //
         
-        return; // functions below are still not defined in ilXapiCmi5Type
+        // return; // functions below are still not defined in ilXapiCmi5Type
         
-		$type_fields = $this->typedef->getFieldsAssoc();
-		$type_values = $this->typedef->getInputValues();
-		$input_values = $this->getInputValues();
-		foreach ($type_fields as $field) {
-			// set value to user input
-			if ($field['field_type'] != ilXapiCmi5Type::FIELDTYPE_TEMPLATE and $field['field_type'] != ilXapiCmi5Type::FIELDTYPE_CALCULATED) {
-				switch ($field['level']) {
-					case "type":
-						$field['field_value'] = $type_values[$field['field_name']];
-						break;
+		// $type_fields = $this->typedef->getFieldsAssoc();
+		// $type_values = $this->typedef->getInputValues();
+		// $input_values = $this->getInputValues();
+		// foreach ($type_fields as $field) {
+			// // set value to user input
+			// if ($field['field_type'] != ilXapiCmi5Type::FIELDTYPE_TEMPLATE and $field['field_type'] != ilXapiCmi5Type::FIELDTYPE_CALCULATED) {
+				// switch ($field['level']) {
+					// case "type":
+						// $field['field_value'] = $type_values[$field['field_name']];
+						// break;
 
-					case "object":
-					default:
-						$field['field_value'] = $input_values[$field['field_name']];
-						break;
-				}
-			}
+					// case "object":
+					// default:
+						// $field['field_value'] = $input_values[$field['field_name']];
+						// break;
+				// }
+			// }
 
-			$this->fields[$field['field_name']] = $field;
-		}
-	}
+			// $this->fields[$field['field_name']] = $field;
+		// }
+	// }
 
 	/**
 	 * get info about the context in which the link is used
