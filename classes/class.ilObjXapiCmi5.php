@@ -41,6 +41,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	protected $lp_mode = self::LP_INACTIVE;
 	protected $lp_threshold = 0.5;
 	protected $show_debug = 0;
+	protected $use_fetch = 0;
 
 	/**
 	 * Return URL: This is a run-time variable set by the GUI and not stored
@@ -215,6 +216,15 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	public function getShowDebug() {
 		return $this->show_debug;
 	}
+	
+
+	public function setUseFetch($a_use_fetch) {
+		$this->use_fetch = $a_use_fetch;
+	}
+
+	public function getUseFetch() {
+		return $this->use_fetch;
+	}
 	// /**
 	 // * set a return url for coming back from the content
 	 // * 
@@ -368,10 +378,11 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	 * @param $a_field
 	 * @return unknown_type
 	 */
-	private function fillToken($a_field) {
+	// private function fillToken($a_field) {
+	public function fillToken() {
 		$seconds = $this->getTimeToDelete();
 		$result = $this->selectCurrentTimestamp();
-		$time = new ilDateTime($result['current_timestamp'], IL_CAL_DATETIME);
+		$time = new ilDateTime($result['CURRENT_TIMESTAMP'], IL_CAL_DATETIME);
 
 		$timestamp = $time->get(IL_CAL_UNIX);
 		$new_timestamp = $timestamp + $seconds;
@@ -778,10 +789,10 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 			'availability_type' => array('integer', $this->getAvailabilityType()),
 			'launch_url' => array('text', $this->getLaunchUrl()),
 			'activity_id' => array('text', $this->getActivityId()),
-			'launch_key' => array('text', $this->getLaunchKey()),
-			'launch_secret' => array('text', $this->getLaunchSecret()),
+			// 'launch_key' => array('text', $this->getLaunchKey()),
+			// 'launch_secret' => array('text', $this->getLaunchSecret()),
 			'show_debug' => array('integer', $this->getShowDebug()),
-		
+			'use_fetch' => array('integer', $this->getUseFetch()),
 			// 'instructions' => array('text', $this->getInstructions()),
 			// 'meta_data_xml' => array('text', $this->getMetaDataXML()),
 			'lp_mode' => array('integer', $this->getLPMode())
@@ -792,15 +803,32 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	}
 
 	public function insertToken($a_token, $a_time) {
-		global $ilDB;
-
+		global $ilDB, $ilUser;
 		$ilDB->insert('xxcf_data_token', array(
 			'token' => array('text', $a_token),
-			'time' => array('timestamp', $a_time))
+			'time' => array('timestamp', $a_time),
+			'obj_id' => array('integer', $this->getId()),
+			'usr_id' => array('integer', $ilUser->getId())
+			)
 		);
-
 		return true;
 	}
+	
+	public function getToken() {
+		global $ilDB, $ilUser;
+		$token = '';
+		$obj_id=$this->_lookupObjectId($_GET['ref_id']);
+		$query = "SELECT token FROM xxcf_data_token WHERE obj_id=" . $ilDB->quote($obj_id, 'integer') 
+			. " AND usr_id=" . $ilDB->quote($ilUser->getId(), 'integer');
+			//.time
+		$result = $ilDB->query($query);
+		$row = $ilDB->fetchObject($result);
+		if ($row) {
+			$token = $row->token;
+		}
+		return $token;
+	}
+
 
 	public function deleteToken($times) {
 		global $ilDB;
@@ -855,9 +883,10 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 			// $this->setMetaDataXML($row->meta_data_xml);
 			$this->setLaunchUrl($row->launch_url);
 			$this->setActivityId($row->activity_id);
-			$this->setLaunchKey($row->launch_key);
-			$this->setLaunchSecret($row->launch_secret);
+			// $this->setLaunchKey($row->launch_key);
+			// $this->setLaunchSecret($row->launch_secret);
 			$this->setShowDebug($row->show_debug);
+			$this->setUseFetch($row->use_fetch);
 			$this->setLPMode($row->lp_mode);
 			// $this->setLPThreshold($row->lp_threshold);
 		}
@@ -866,7 +895,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	/**
 	 * Do Cloning
 	 */
-	function doCloneObject($new_obj, $a_target_id, $a_copy_id = null) {
+	function doCloneObject($new_obj, $a_target_id, $a_copy_id = null) { //TODO
 		global $ilDB;
 		
 		//Settings filling
@@ -922,6 +951,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 			return "0";
 		}
 	}
+
 
 	function getTimeToDelete() {
 		global $ilDB;

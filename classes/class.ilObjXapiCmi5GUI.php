@@ -331,6 +331,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
     function viewEmbedObject()
     {
         global $tpl, $ilErr, $ilUser;
+		$token = $this->object->fillToken();
         $this->object->trackAccess();
         $privacy_ident = "";
         switch ($this->object->typedef->getPrivacyIdent()) {
@@ -352,8 +353,16 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 		$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
 		$my_tpl->setVariable('XAPI_USER_ID', $privacy_ident); 
 		$my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname()); // ToDo: get from privacy_name
-		$my_tpl->setVariable('LAUNCH_KEY', $this->object->getLaunchKey());
-		$my_tpl->setVariable('LAUNCH_SECRET', $this->object->getLaunchSecret());
+		if ($this->object->getUseFetch() == true) {
+			$my_tpl->setCurrentBlock("fetch");
+			$my_tpl->setVariable('REF_ID', $this->object->getId());
+			$my_tpl->parseCurrentBlock();
+		} else {
+			$my_tpl->setCurrentBlock("no_fetch");
+			$my_tpl->setVariable('LAUNCH_KEY', CLIENT_ID);//$this->object->getLaunchKey());
+			$my_tpl->setVariable('LAUNCH_SECRET', $token);//$this->object->getLaunchSecret());
+			$my_tpl->parseCurrentBlock();
+		}
 		$my_tpl->setVariable('LAUNCH_URL', $this->object->getLaunchUrl());
 		$my_tpl->setVariable('LAUNCH_TARGET', 'window');
 		$my_tpl->setVariable('WIN_LAUNCH_WIDTH', '1000');
@@ -586,21 +595,30 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 			$item->setValue($a_values['activity_id']);        
 			$this->form->addItem($item);
             
-			$item = new ilTextInputGUI($this->lng->txt('launch_key'), 'launch_key');
-			$item->setSize(40);
-			$item->setMaxLength(128);
-			// $item->setRequired(true);
-			$item->setInfo($this->txt('launch_key_info'));
-			$item->setValue($a_values['launch_key']);        
-			$this->form->addItem($item);
+			// $item = new ilTextInputGUI($this->lng->txt('launch_key'), 'launch_key');
+			// $item->setSize(40);
+			// $item->setMaxLength(128);
+			// // $item->setRequired(true);
+			// $item->setInfo($this->txt('launch_key_info'));
+			// $item->setValue($a_values['launch_key']);        
+			// $this->form->addItem($item);
         	            
-			$item = new ilTextInputGUI($this->lng->txt('launch_secret'), 'launch_secret');
-			$item->setSize(40);
-			$item->setMaxLength(128);
-			// $item->setRequired(true);
-			$item->setInfo($this->txt('launch_secret_info'));
-			$item->setValue($a_values['launch_secret']);        
-			$this->form->addItem($item);
+			// $item = new ilTextInputGUI($this->lng->txt('launch_secret'), 'launch_secret');
+			// $item->setSize(40);
+			// $item->setMaxLength(128);
+			// // $item->setRequired(true);
+			// $item->setInfo($this->txt('launch_secret_info'));
+			// $item->setValue($a_values['launch_secret']);        
+			// $this->form->addItem($item);
+
+            $item = new ilCheckboxInputGUI($this->lng->txt('use_fetch'), 'use_fetch');
+            $item->setInfo($this->txt("use_fetch_info"));
+			$item->setValue("1");
+			if ($a_values['use_fetch'])
+			{
+				$item->setChecked(true);
+			}        
+          	$this->form->addItem($item);
 			
             $item = new ilCheckboxInputGUI($this->lng->txt('show_debug'), 'show_debug');
             $item->setInfo($this->txt("show_debug_info"));
@@ -640,9 +658,10 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         }
         $values['launch_url'] = $this->object->getLaunchUrl();
         $values['activity_id'] = $this->object->getActivityId();
-        $values['launch_key'] = $this->object->getLaunchKey();
-        $values['launch_secret'] = $this->object->getLaunchSecret();
+        // $values['launch_key'] = $this->object->getLaunchKey();
+        // $values['launch_secret'] = $this->object->getLaunchSecret();
         $values['show_debug'] = $this->object->getShowDebug();
+        $values['use_fetch'] = $this->object->getUseFetch();
         return $values;
     }
 
@@ -664,9 +683,10 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         $this->object->setAvailabilityType($this->form->getInput('online') ? ilObjXapiCmi5::ACTIVATION_UNLIMITED : ilObjXapiCmi5::ACTIVATION_OFFLINE);
 		$this->object->setLaunchUrl($this->form->getInput("launch_url"));
 		$this->object->setActivityId($this->form->getInput("activity_id"));
-		$this->object->setLaunchKey($this->form->getInput("launch_key"));
-		$this->object->setLaunchSecret($this->form->getInput("launch_secret"));
+		// $this->object->setLaunchKey($this->form->getInput("launch_key"));
+		// $this->object->setLaunchSecret($this->form->getInput("launch_secret"));
 		$this->object->setShowDebug($this->form->getInput("show_debug"));
+		$this->object->setUseFetch($this->form->getInput("use_fetch"));
         $this->object->update();
     }
     

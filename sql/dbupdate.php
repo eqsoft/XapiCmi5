@@ -426,3 +426,14 @@ if(!$ilDB->tableExists('xxcf_data_token'))
 	}
 
 ?>
+<#11>
+<?php
+	if ( !$ilDB->tableColumnExists('xxcf_data_settings', 'use_fetch') ) {
+		$ilDB->addTableColumn('xxcf_data_settings', 'use_fetch', array(
+				'type' => 'integer',
+				'length' => 1,
+				'notnull' => true,
+				'default' => 1
+		));
+	}
+?>
