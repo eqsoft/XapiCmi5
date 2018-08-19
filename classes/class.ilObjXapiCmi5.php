@@ -1093,8 +1093,8 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
     
     /******* TESTING *******/
     
-    public static function handleLPStatusFromProxy($client, $token, $status) {
-        self::_log("handleLPStatusFromProxy: ". $client . ":" . $token . ":" . $status);
+    public static function handleLPStatusFromProxy($client, $token, $status, $score) {
+        self::_log("handleLPStatusFromProxy: ". $client . ":" . $token . ":" . $status . ":" . $score);
     }
     
     private static function _log($txt) {

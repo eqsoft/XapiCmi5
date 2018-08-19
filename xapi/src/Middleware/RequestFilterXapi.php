@@ -113,6 +113,7 @@ class RequestFilterXapi
 		//$obj_id = "http://id.tincanapi.com/activity/tincan-prototypes/golf-example"; //ToDo: validate in xapi plugin classes
 		if (isset($obj->verb) && isset($obj->actor) && isset($obj->object)) {
 			$verb = $obj->verb->id;
+            $score = 'NOT_SET';
 			if (array_key_exists($verb, $sniff_verbs)) {
                 // check context
                 
@@ -122,6 +123,11 @@ class RequestFilterXapi
                         return;
                     }
                 }
+                if (isset($obj->result) && isset($obj->result->score) && isset($obj->result->score->scaled)) {
+                    $score = $obj->result->score->scaled;
+                    $this->_log('score:' . $score);
+                        
+                }
                 /*
 				if ($obj->object->id === $obj_id) { 
 					//ToDo: set learning status in Plugin!
@@ -129,7 +135,7 @@ class RequestFilterXapi
 					//_log("verb: " . $verb);
 				}
                 */
-                \ilObjXapiCmi5::handleLPStatusFromProxy($this->client, $this->token, $verb);
+                \ilObjXapiCmi5::handleLPStatusFromProxy($this->client, $this->token, $verb, $score);
 			}
 		} 
 	}
