@@ -185,7 +185,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         if (ilObjUserTracking::_enabledLearningProgress() &&
             ($this->checkPermissionBool("edit_learning_progress") || $this->checkPermissionBool("read_learning_progress")))
         {
-            if ($this->object->getLPMode() == ilObjXapiCmi5::LP_ACTIVE && $this->checkPermissionBool("read_learning_progress"))
+            if ($this->object->getLPMode() > 0 && $this->checkPermissionBool("read_learning_progress"))
             {
                 if (ilObjUserTracking::_enabledUserRelatedData())
                 {
@@ -758,8 +758,22 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         $rg->setValue($this->object->getLPMode());
         $ro = new ilRadioOption($this->txt('lp_inactive'),ilObjXapiCmi5::LP_INACTIVE, $this->txt('lp_inactive_info'));
         $rg->addOption($ro);
-        $ro = new ilRadioOption($this->txt('lp_active'),ilObjXapiCmi5::LP_ACTIVE, $this->txt('lp_active_info'));
+        $ro = new ilRadioOption($this->txt('lp_completed'),ilObjXapiCmi5::LP_Completed, $this->txt('lp_completed_info'));
+        $rg->addOption($ro);
+        $ro = new ilRadioOption($this->txt('lp_passed'),ilObjXapiCmi5::LP_Passed, $this->txt('lp_passed_info'));
+        $rg->addOption($ro);
+        $ro = new ilRadioOption($this->txt('lp_completed_and_passed'),ilObjXapiCmi5::LP_CompletedAndPassed, $this->txt('lp_completed_and_passed_info'));
+        $rg->addOption($ro);
+        $ro = new ilRadioOption($this->txt('lp_completed_or_passed'),ilObjXapiCmi5::LP_CompletedOrPassed, $this->txt('lp_completed_or_passed_info'));
+        $rg->addOption($ro);
+        $form->addItem($rg);
 
+		$item = new ilCheckboxInputGUI($this->txt('use_score'), 'use_score');
+		$item->setInfo($this->txt("use_score_info"));
+		$item->setValue("1");
+		if ($this->object->getLPUseScore()) {
+			$item->setChecked(true);
+		}
         $ni = new ilNumberInputGUI($this->txt('lp_threshold'),'lp_threshold');
         $ni->setMinValue(0);
         $ni->setMaxValue(1);
@@ -768,11 +782,11 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         $ni->setRequired(true);
         $ni->setValue($this->object->getLPThreshold());
         $ni->setInfo($this->txt('lp_threshold_info'));
-        $ro->addSubItem($ni);
+        $item->addSubItem($ni);
+		$form->addItem($item);
 
-        $rg->addOption($ro);
-        $form->addItem($rg);
-
+		
+		
         $form->addCommandButton('updateLPSettings', $lng->txt('save'));
         $this->form = $form;
 
@@ -795,6 +809,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         }
 
         $this->object->setLPMode($this->form->getInput('lp_mode'));
+		//score
         $this->object->setLPThreshold($this->form->getInput('lp_threshold'));
         $this->object->update();
         $this->ctrl->redirect($this, 'editLPSettings');
