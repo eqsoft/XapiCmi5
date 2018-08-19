@@ -12,6 +12,7 @@ class ProxyMiddleware
 	protected $guzzle_client;
 	protected $upstream;
 	protected $authorization;
+    protected $request_options;
 
 	public function __construct(Client $guzzle_client, $target, $request_options = [])
 	{
@@ -33,16 +34,24 @@ class ProxyMiddleware
 		preg_match($parts_reg,$full_uri,$cmd_parts);
         
 		if (count($cmd_parts) === 3) { // should always
-			$cmd = $cmd_parts[2];
-			$upstream = $this->upstream.$cmd;
-			$uri = new Uri($upstream);
-			$changes = array(
-				'uri' => $uri,
-				'set_headers' => array('Authorization' => $this->authorization)
-			);
-			$request = \GuzzleHttp\Psr7\modify_request($request, $changes);
-			$response = $this->guzzle_client->send($request,$this->request_options);
-			return $next($request, $response);
+            try {
+                $cmd = $cmd_parts[2];
+                $upstream = $this->upstream.$cmd;
+                $uri = new Uri($upstream);
+                $changes = array(
+                    'uri' => $uri,
+                    'set_headers' => array('Cache-Control' => 'no-cache, no-store, must-revalidate', 'Authorization' => $this->authorization)
+                );
+                $request = \GuzzleHttp\Psr7\modify_request($request, $changes);
+                if ($request->getMethod() === "GET" ) {
+                    $this->_log($request->getUri());
+                }
+                $response = $this->guzzle_client->send($request,$this->request_options);
+                return $next($request, $response);
+            }
+            catch (Exception $e) {
+                return $next($request, $response);
+            }
 		}
 		else {
 			$this->_log("Wrong command parts!");

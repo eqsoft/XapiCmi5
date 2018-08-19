@@ -7,14 +7,20 @@ use Zend\Diactoros\ServerRequestFactory;
 use GuzzleHttp\RequestOptions;
 
 //"MzNlNDY5Nzk3OGRhMWU3MWI4ZjI5ODczN2YwZThmYTg1NGM0MzExNDphZWI2OTNiNDAwOTc3YmQxNTdlYWQzNjBmYzI5NDk1MGU5MjNlYjdi"
-function getTarget() {
+
+function getTarget() { // are there calls without credentials???
     $no_credentials = (empty($_SERVER['PHP_AUTH_USER']) && empty($_SERVER['PHP_AUTH_PW']));
     if ($no_credentials) {
 		header('HTTP/1.1 401 Authorization Required');
 		//header('WWW-Authenticate: Basic realm="Access denied"');
 		exit;
 	}
-   
+    
+    /*
+    $client = (!empty($_SERVER['PHP_AUTH_USER'])) ? $_SERVER['PHP_AUTH_USER'] : "xapiplugin";
+    $token = (!empty($_SERVER['PHP_AUTH_PW'])) ? $_SERVER['PHP_AUTH_PW'] : "adfsdfasdfasdfasdfasdfasdfasdf";
+    */
+    
     $client = $_SERVER['PHP_AUTH_USER'];
     $token = $_SERVER['PHP_AUTH_PW'];
     
@@ -37,7 +43,7 @@ function getRequestOptions() {
 	$ret = array(
 			RequestOptions::VERIFY => false,
 			RequestOptions::SYNCHRONOUS => true,
-			RequestOptions::CONNECT_TIMEOUT => 10
+			RequestOptions::CONNECT_TIMEOUT => 5
 			);
 	return $ret;
 }
@@ -45,7 +51,8 @@ function getRequestOptions() {
 function getMiddleware() {
 	$middleware = [
 			\XapiProxy\Middleware\RequestFilterXapi::class,
-			\XapiProxy\Middleware\ProxyMiddleware::class
+			\XapiProxy\Middleware\ProxyMiddleware::class,
+            \XapiProxy\Middleware\ResponseFilterXapi::class
 	];
 	return $middleware;
 }
@@ -64,7 +71,9 @@ return [
         ->constructorParameter('target', DI\get('target'))
         ->constructorParameter('request_options', DI\get('request_options')),
     \XapiProxy\Middleware\RequestFilterXapi::class => DI\object()
+        ->constructorParameter('target', DI\get('target')),
+    \XapiProxy\Middleware\ResponseFilterXapi::class => DI\object()
         ->constructorParameter('target', DI\get('target'))
-        
+        ->constructorParameter('request_options', DI\get('request_options'))
 ];
 ?>

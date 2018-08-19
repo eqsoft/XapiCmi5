@@ -7,16 +7,48 @@ use \XapiProxy\ilUtil as ilUtil;
 
 class DataService
 {
+    protected static function getIniHost() {
+        // Create ini-handler (onces)
+        ilInitialisation::initIliasIniFile();
+        global $ilIliasIniFile;
+        // Return [server] -> 'http_path' variable from 'ilias.init.php'
+        $http_path = $ilIliasIniFile->readVariable('server', 'http_path');
+        // Strip http:// & https://
+        if (strpos($http_path, 'https://') !== false)
+          $http_path = substr($http_path, 8);
+        if (strpos($http_path, 'http://') !== false)
+          $http_path = substr($http_path, 7);
+        // Return clean host
+        return $http_path;
+    }
+    
     public static function initIlias($client_id, $client_token) {
         define ("CLIENT_ID", $client_id);
         define('IL_COOKIE_HTTPONLY', true); // Default Value
 		define('IL_COOKIE_EXPIRE', 0);
 		define('IL_COOKIE_PATH', '/');
 		define('IL_COOKIE_DOMAIN', '');
+        require_once('Services/Context/classes/class.ilContext.php');
+         \ilContext::init(\ilContext::CONTEXT_SCORM);
+        // Remember original values
+        $_ORG_SERVER = array(
+          'HTTP_HOST'    => $_SERVER['HTTP_HOST'],
+          'REQUEST_URI'  => $_SERVER['REQUEST_URI'],
+          'PHP_SELF'     => $_SERVER['PHP_SELF'],
+        );
+        // Overwrite $_SERVER entries which would confuse ILIAS during initialisation
+        $_SERVER['REQUEST_URI'] = '';
+        $_SERVER['PHP_SELF']    = '/index.php';
+        $_SERVER['HTTP_HOST']   = self::getIniHost();
         require_once "./Services/Utilities/classes/class.ilUtil.php";
-        ilInitialisation::initIliasIniFile();
+        //ilInitialisation::initIliasIniFile();
         ilInitialisation::initClientIniFile();
         ilInitialisation::initDatabase();
+        
+        // Restore original, since this could lead to bad side-effects otherwise
+        $_SERVER['HTTP_HOST']   = $_ORG_SERVER['HTTP_HOST'];
+        $_SERVER['REQUEST_URI'] = $_ORG_SERVER['REQUEST_URI'];
+        $_SERVER['PHP_SELF']    = $_ORG_SERVER['PHP_SELF'];
         //ilInitialisation::initLog();
     }
 }
