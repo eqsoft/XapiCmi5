@@ -205,3 +205,32 @@ conf_privacy_comment_default#:#Hinweis an Benutzer
 info_privacy_comment_default#:#Geben Sie hier bei Bedarf einen zusätzlichen Hinweis zum Datenschutz bei Nutzung dieses LRS ein.
 conf_remarks#:#Interne Anmerkungen
 info_remarks#:#Notieren Sie hier Ihre Anmerkungen zu diesem LRS-Typ.
+launch_options#:#Optionen für den Start
+launch_url#:#URL der Ressource
+launch_url_info#:#Geben Sie hier die Internet-Adresse mit Angabe von http:// bzw. https:// an.
+activity_id#:#Activity-ID
+activity_id_info#:#Diese ID wird in erster Linie für die Anzeige von Daten aus dem LRS benötigt. Diese ID erhaten Sie vom Anbieter der Ressource. 
+use_fetch#:#Authorisierung über Fetch-URL
+use_fetch_info#:#Sofern die Ressource diese Option unterstützt, sollten Sie diese Option zur Erhöhung der Datensicherheit nutzen. 
+privacy_options#:#Optionen für den Datenschutz
+content_privacy_ident#:#Benutzerkennung für die Ressource
+content_privacy_name#:#Benutzername für die Ressource
+log_options#:#Optionen für die Anzeige übermittelter Daten
+show_debug#:#Statement-Anzeige
+show_debug_no#:#keine Anzeige
+show_debug_setting#:#Anzeige nur für Benutzer mit dem Recht 'Einstellungen bearbeiten'
+show_debug_lp#:#Anzeige nur für Benutzer mit dem Recht 'Lernfortschritt anderer Benutzer einsehen'
+show_debug_all#:#Anzeige für alle
+show_debug_info#:#Je nach Einstellung des LRS können auch Daten weiterer Nutzer angezeigt werden!
+lp_completed#:#Bearbeitet wenn vollständig bearbeitet
+lp_completed_info#:#Der ILIAS-Lernstatus wechselt zu 'bearbeitet' wenn die Ressource 'completed' sendet.
+lp_passed#:#Bearbeitet wenn bestanden
+lp_passed_info#:#Der ILIAS-Lernstatus wechselt zu 'bearbeitet' wenn die Ressource 'passed' sendet.
+lp_completed_and_passed#:#Bearbeitet wenn bestanden und vollständig bearbeitet
+lp_completed_and_passed_info#:#Der ILIAS-Lernstatus wechselt zu 'bearbeitet' wenn die Ressource 'passed' und 'completed' sendet.
+lp_completed_or_passed#:#Bearbeitet wenn bestanden oder vollständig bearbeitet
+lp_completed_or_passed_info#:#Der ILIAS-Lernstatus wechselt zu 'bearbeitet' wenn die Ressource 'passed' oder 'completed' sendet.
+lp_mastery_score#:#Bearbeitet wenn Mindestpunktestand erreicht
+lp_mastery_score_info#:#Der ILIAS-Lernstatus wechselt zu 'bearbeitet' wenn die Ressource einen Punktestand sendet, der den hier anzugebenden Mindestpunktestand erreicht.
+lp_fix_condition#:#'bearbeitet' einfrieren
+lp_fix_condition_info#:#Ist der ILIAS-Lernstatus 'bearbeitet' erreicht, bleibt er erhalten.

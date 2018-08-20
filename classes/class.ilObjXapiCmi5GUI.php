@@ -576,10 +576,10 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
           	$this->form->addItem($item);
 			
 			$item = new ilFormSectionHeaderGUI();
-			$item->setTitle($this->lng->txt("launch_options"));
+			$item->setTitle($this->txt("launch_options"));
 			$this->form->addItem($item);
 
-			$item = new ilTextInputGUI($this->lng->txt('launch_url'), 'launch_url');
+			$item = new ilTextInputGUI($this->txt('launch_url'), 'launch_url');
 			$item->setSize(40);
 			$item->setMaxLength(128);
 			$item->setRequired(true);
@@ -611,7 +611,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 			// $item->setValue($a_values['launch_secret']);        
 			// $this->form->addItem($item);
 
-            $item = new ilCheckboxInputGUI($this->lng->txt('use_fetch'), 'use_fetch');
+            $item = new ilCheckboxInputGUI($this->txt('use_fetch'), 'use_fetch');
             $item->setInfo($this->txt("use_fetch_info"));
 			$item->setValue("1");
 			if ($a_values['use_fetch'])
@@ -620,17 +620,9 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 			}        
           	$this->form->addItem($item);
 			
-            $item = new ilCheckboxInputGUI($this->lng->txt('show_debug'), 'show_debug');
-            $item->setInfo($this->txt("show_debug_info"));
-			$item->setValue("1");
-			if ($a_values['show_debug'])
-			{
-				$item->setChecked(true);
-			}        
-          	$this->form->addItem($item);
 
 			$item = new ilFormSectionHeaderGUI();
-			$item->setTitle($this->lng->txt("privacy_options"));
+			$item->setTitle($this->txt("privacy_options"));
 			$this->form->addItem($item);
 
 			$item = new ilRadioGroupInputGUI($this->txt('content_privacy_ident'), 'privacy_ident');
@@ -661,6 +653,19 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 			$item->setRequired(false);
 			$this->form->addItem($item);
 
+
+			$item = new ilFormSectionHeaderGUI();
+			$item->setTitle($this->txt("log_options"));
+			$this->form->addItem($item);
+
+			$item = new ilCheckboxInputGUI($this->txt('show_debug'), 'show_debug');
+			$item->setInfo($this->txt("show_debug_info"));
+			$item->setValue("1");
+			if ($a_values['show_debug'])
+			{
+				$item->setChecked(true);
+			}        
+			$this->form->addItem($item);
 
             $this->form->setTitle($this->lng->txt('settings'));
             $this->form->addCommandButton("update", $this->lng->txt("save"));

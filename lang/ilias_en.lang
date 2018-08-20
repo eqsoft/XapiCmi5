@@ -205,3 +205,32 @@ conf_privacy_comment_default#:#Indication to user
 info_privacy_comment_default#:#Please insert, if required, an additional indication on data security when using this LRS.
 conf_remarks#:#Internal comments
 info_remarks#:#Place to write down your comments on this LRS-type here. 
+launch_options#:#options for start
+launch_url#:#URL of the resource
+launch_url_info#:#Insert here the Internet address by adding http:// or https:// .
+activity_id#:#Activity-ID
+activity_id_info#:#This ID is primarily used for the display of data from the LRS. You receive this ID from the resource provider. 
+use_fetch#:#Authorization through Fetch-URL
+use_fetch_info#:#As long as the resource supports this option, you should use this option to increase data security.  
+privacy_options#:#Options for data security
+content_privacy_ident#:#User identification for resource
+content_privacy_name#:#User name for resource
+log_options#:#Options for the display of transmitted data
+show_debug#:#Statement-display
+show_debug_no#:#no display
+show_debug_setting#:#Display only for users maintaining the right of 'edit settings'
+show_debug_lp#:#Display only for users maintaining the right of 'looking at the learning progress of other users'
+show_debug_all#:#Display for all
+show_debug_info#:#Depending on the settings of the LRS data of other users can also be displayed! 
+lp_completed#:#Edited when fully edited 
+lp_completed_info#:#The ILIAS Learning status switches to 'edited' as soon as the resource sends 'completed'.
+lp_passed#:#Edited when passed 
+lp_passed_info#:#The ILIAS Learning status switches to 'edited' as soon as the resource sends 'passed'.
+lp_completed_and_passed#:#Edited when passed and fully edited 
+lp_completed_and_passed_info#:#The ILIAS Learning status switches to 'edited' as soon as the resource sends 'passed' and 'completed'.
+lp_completed_or_passed#:#Edited when passed and fully edited 
+lp_completed_or_passed_info#:#The ILIAS learning status switches to 'edited' as soon as the resource sends 'passed' or 'completed'.
+lp_mastery_score#:#Edited when minimum score is achieved 
+lp_mastery_score_info#:#The ILIAS learning status switches to 'edited' as soon as the resource sends a score that achieves the minimum score recorded here. 
+lp_fix_condition#:#'edited' suspended
+lp_fix_condition_info#:#Once the ILIAS Learning status 'edited' is achieved, it remains.
