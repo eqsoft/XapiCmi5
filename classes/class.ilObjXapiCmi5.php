@@ -54,7 +54,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	protected $show_debug = 0;
 	protected $use_fetch = 0;
 	protected $privacy_ident = ilXapiCmi5Type::PRIVACY_IDENT_EMAIL;
-	protected $privacy_name;
+	protected $privacy_name = 3;
 
 	/**
 	 * Return URL: This is a run-time variable set by the GUI and not stored
@@ -223,7 +223,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	}
 
 	public function setShowDebug($a_show_debug) {
-		$this->show_debug = $a_show_debug;
+		if ($a_show_debug != null) $this->show_debug = $a_show_debug;
 	}
 	
 	public function getShowDebug() {
@@ -232,7 +232,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	
 
 	public function setUseFetch($a_use_fetch) {
-		$this->use_fetch = $a_use_fetch;
+		if ($a_use_fetch != null) $this->use_fetch = $a_use_fetch;
 	}
 
 	public function getUseFetch() {
@@ -242,7 +242,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 
 	public function setPrivacyIdent($a_option)
 	{
-		$this->privacy_ident = $a_option;
+		if ($a_option != null) $this->privacy_ident = $a_option;
 	}
 	
 	public function getPrivacyIdent()
@@ -253,7 +253,7 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 
 	public function setPrivacyName($a_option)
 	{
-		$this->privacy_name = $a_option;
+		if ($a_option != null) $this->privacy_name = $a_option;
 	}
 	
 	public function getPrivacyName()
