@@ -223,7 +223,8 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	}
 
 	public function setShowDebug($a_show_debug) {
-		if ($a_show_debug != null) $this->show_debug = $a_show_debug;
+		if ($a_show_debug == null) $a_show_debug = 0;
+		$this->show_debug = $a_show_debug;
 	}
 	
 	public function getShowDebug() {
@@ -232,7 +233,8 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	
 
 	public function setUseFetch($a_use_fetch) {
-		if ($a_use_fetch != null) $this->use_fetch = $a_use_fetch;
+		if ($a_use_fetch == null) $a_use_fetch = 0;
+		$this->use_fetch = $a_use_fetch;
 	}
 
 	public function getUseFetch() {
