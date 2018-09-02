@@ -5,7 +5,8 @@ function Config() {
 }
 Config.endpoint = '{ILIAS_URL}/Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/xapi/xapiproxy.php';
 Config.actor = { "mbox":"{XAPI_USER_ID}", "name":"{XAPI_USER_NAME}" };
-
+Config.activityId = '{XAPI_ACTIVITY_ID}';
+Config.registration = '{XAPI_REGISTRATION}';
 
 function launchxapi() {
 <!-- BEGIN fetch -->
@@ -19,8 +20,11 @@ function launchxapi() {
     var link = '{LAUNCH_URL}' +
             "?endpoint=" + encodeURIComponent(Config.endpoint) +
             vlink +
-            "&actor=" + encodeURIComponent(JSON.stringify(Config.actor))
-			//+ "&registration=0bd056f1-ab68-4618-89fd-e2056d2a49c7"
+            "&actor=" + encodeURIComponent(JSON.stringify(Config.actor)) +
+            "&activity_id=" + encodeURIComponent(Config.activityId) +
+            "&activityId=" + encodeURIComponent(Config.activityId)
+            //"&registration=" + Config.registration
+	    //+ "&registration=0bd056f1-ab68-4618-89fd-e2056d2a49c7"
 			;
 	var launch_target='{LAUNCH_TARGET}';
 	if (launch_target == 'window') {

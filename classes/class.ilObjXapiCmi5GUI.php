@@ -323,6 +323,9 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         }
     }
 
+    function getRegistration() {
+        return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+    }
     /**
      * view the embedded object
      *
@@ -334,6 +337,8 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 		$token = $this->object->fillToken();
         $this->object->trackAccess();
         $privacy_ident = "";
+	$activityId = $this->object->getActivityId();
+	$registration = $this->getRegistration();
         switch ($this->object->getPrivacyIdent()) {
             case ilXapiCmi5Type::PRIVACY_IDENT_CODE :
             case ilXapiCmi5Type::PRIVACY_IDENT_NUMERIC :
@@ -352,7 +357,9 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 		$my_tpl = new ilTemplate('./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/templates/default/tpl.view_embed.html', true, true);
 		$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
 		$my_tpl->setVariable('XAPI_USER_ID', $privacy_ident); 
-		$my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname()); // ToDo: get from privacy_name
+		$my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname());
+		$my_tpl->setVariable('XAPI_ACTIVITY_ID', $activityId);
+		$my_tpl->setVariable('XAPI_REGISTRATION', $registration);
 		if ($this->object->getUseFetch() == true) {
 			$my_tpl->setCurrentBlock("fetch");
 			$my_tpl->setVariable('REF_ID', $this->object->getRefId());
