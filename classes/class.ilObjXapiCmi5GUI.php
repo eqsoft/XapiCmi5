@@ -355,30 +355,23 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         }
         $this->tabs_gui->activateTab('viewEmbed');
 		$my_tpl = new ilTemplate('./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/templates/default/tpl.view_embed.html', true, true);
-		$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
-		$my_tpl->setVariable('XAPI_USER_ID', $privacy_ident); 
-		$my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname());
-		$my_tpl->setVariable('XAPI_ACTIVITY_ID', $activityId);
-		$my_tpl->setVariable('XAPI_REGISTRATION', $registration);
+
 		if ($this->object->getUseFetch() == true) {
 			$my_tpl->setCurrentBlock("fetch");
 			$my_tpl->setVariable('REF_ID', $this->object->getRefId());
+			$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
 			$my_tpl->parseCurrentBlock();
 		} else {
 			$my_tpl->setCurrentBlock("no_fetch");
+			$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
 			$my_tpl->setVariable('LAUNCH_KEY', CLIENT_ID);//$this->object->getLaunchKey());
 			$my_tpl->setVariable('LAUNCH_SECRET', $token);//$this->object->getLaunchSecret());
 			$my_tpl->parseCurrentBlock();
 		}
-		$my_tpl->setVariable('LAUNCH_URL', $this->object->getLaunchUrl());
-		$my_tpl->setVariable('LAUNCH_TARGET', 'window');
-		$my_tpl->setVariable('WIN_LAUNCH_WIDTH', '1000');
-		$my_tpl->setVariable('WIN_LAUNCH_HEIGHT', '700');
-		$my_tpl->setVariable('FRAME_LAUNCH_WIDTH', '1000');
-		$my_tpl->setVariable('FRAME_LAUNCH_HEIGHT', '700');
 
 		if ($this->object->getShowDebug() == true) {
 			$my_tpl->setCurrentBlock("debug_embed");
+			$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
 			$my_tpl->setVariable('LRS_ENDPOINT', $this->object->typedef->getLrsEndpoint());
 			$my_tpl->setVariable('LRS_KEY', $this->object->typedef->getLrsKey());
 			$my_tpl->setVariable('LRS_SECRET', $this->object->typedef->getLrsSecret());
@@ -386,6 +379,18 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 			$my_tpl->setVariable('LRS_USER_NAME', $ilUser->getFullname()); // ToDo: get from privacy_name
 			$my_tpl->parseCurrentBlock();
 		}
+
+		$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
+                $my_tpl->setVariable('XAPI_USER_ID', $privacy_ident); 
+                $my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname());
+                $my_tpl->setVariable('XAPI_ACTIVITY_ID', $activityId);
+                $my_tpl->setVariable('XAPI_REGISTRATION', $registration);
+                $my_tpl->setVariable('LAUNCH_URL', $this->object->getLaunchUrl());
+                $my_tpl->setVariable('LAUNCH_TARGET', 'window');
+                $my_tpl->setVariable('WIN_LAUNCH_WIDTH', '1000');
+                $my_tpl->setVariable('WIN_LAUNCH_HEIGHT', '700');
+                $my_tpl->setVariable('FRAME_LAUNCH_WIDTH', '1000');
+                $my_tpl->setVariable('FRAME_LAUNCH_HEIGHT', '700');
 
 		$tpl->setContent($my_tpl->get());
     }
