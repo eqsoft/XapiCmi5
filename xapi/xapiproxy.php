@@ -1,4 +1,9 @@
 <?php
+
+// don't do anything on request method OPTIONS (see .htaccess)
+//if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
+//    exit;
+//}
 chdir("../../../../../../../../");
 
 // ToDo: check if we can replace Zend Classes with Guzzle/Psr7 classes

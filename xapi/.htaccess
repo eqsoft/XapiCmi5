@@ -1,25 +1,30 @@
-# for Testing
-
-# Header always set Transfer-Encoding "compressed"
+# set env var if request method is OPTIONS
+SetEnvIf Request_Method OPTIONS setheader
 
 # with AJAX withCredentials=false (cookies NOT sent)
-#Header always set Access-Control-Allow-Origin "*"                   
-#Header always set Access-Control-Allow-Methods "POST, GET, PUT, OPTIONS, PATCH, DELETE" 
-#Header always set Access-Control-Allow-Headers "X-Accept-Charset,X-Accept,Content-Type,X-Experience-API-Version"
-#RewriteEngine On                  
-#RewriteCond %{REQUEST_METHOD} OPTIONS 
+Header set Access-Control-Allow-Origin "*" env=setheader                   
+Header set Access-Control-Allow-Methods "POST, GET, PUT, OPTIONS, PATCH, DELETE" env=setheader 
+Header set Access-Control-Allow-Headers "X-Accept-Charset,X-Accept,Content-Type,X-Experience-API-Version" env=setheader
+#Header set Access-Control-Max-Age 600 env=setheader
+
+RewriteEngine On                  
+RewriteCond %{REQUEST_METHOD} OPTIONS 
 #RewriteRule ^(.*)$ $1 [R=200,L,E=HTTP_ORIGIN:%{HTTP:ORIGIN}]]
+RewriteRule ^(.*)$ blank.php [QSA,L]
 
 # with AJAX withCredentials=true (cookies sent, SSL allowed...)
-#SetEnvIfNoCase ORIGIN (.*) ORIGIN=$1
-#Header always set Access-Control-Allow-Methods "POST, GET, PUT, OPTIONS, PATCH, DELETE" 
-#Header always set Access-Control-Allow-Origin "%{ORIGIN}e"
-#Header always set Access-Control-Allow-Credentials "true"
-#Header always set Access-Control-Allow-Headers "authorization,X-Accept-Charset,X-Accept,Content-Type,X-Experience-API-Version"
+SetEnvIfNoCase ORIGIN (.*) ORIGIN=$1
+SetEnvIf Request_Method OPTIONS setheader 
+Header set Access-Control-Allow-Methods "POST, GET, PUT, OPTIONS, PATCH, DELETE" env=setheader 
+Header set Access-Control-Allow-Origin "%{ORIGIN}e" env=setheader
+Header set Access-Control-Allow-Credentials "true" env=setheader
+Header set Access-Control-Allow-Headers "authorization,X-Accept-Charset,X-Accept,Content-Type,X-Experience-API-Version" env=setheader
+#Header set Access-Control-Max-Age 600
 
-#RewriteEngine On
-#RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
 #RewriteRule ^(.*)$ $1 [R=200,L,E=HTTP_ORIGIN:%{HTTP:ORIGIN}]
+RewriteRule ^(.*)$ blank.php [QSA,L]
 
 # Always set these headers.
 #Header always set Access-Control-Allow-Origin "*"
@@ -32,4 +37,4 @@
 #RewriteCond %{REQUEST_METHOD} OPTIONS
 #RewriteRule ^(.*)$ $1 [R=200,L]
 
-Header always set Access-Control-Max-Age 600
+#Header always set Access-Control-Max-Age 600
