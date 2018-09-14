@@ -10,32 +10,34 @@ use GuzzleHttp\RequestOptions;
 
 function getTarget() { // are there calls without credentials???
     $no_credentials = (empty($_SERVER['PHP_AUTH_USER']) && empty($_SERVER['PHP_AUTH_PW']));
-    if ($no_credentials) {
+    _log($_SERVER["REQUEST_METHOD"]);
+    if ($_SERVER["REQUEST_METHOD"] != "OPTIONS" && $no_credentials) {
+		_log("no credentials: " . $_SERVER["REQUEST_METHOD"]);
+		//_log(var_export($_SERVER,TRUE));
 		header('HTTP/1.1 401 Authorization Required');
 		//header('WWW-Authenticate: Basic realm="Access denied"');
 		exit;
 	}
-    
-    /*
-    $client = (!empty($_SERVER['PHP_AUTH_USER'])) ? $_SERVER['PHP_AUTH_USER'] : "xapiplugin";
-    $token = (!empty($_SERVER['PHP_AUTH_PW'])) ? $_SERVER['PHP_AUTH_PW'] : "adfsdfasdfasdfasdfasdfasdfasdf";
-    */
-    
-    $client = $_SERVER['PHP_AUTH_USER'];
-    $token = $_SERVER['PHP_AUTH_PW'];
-    
+    else {
+        _log("credentials");
+    }
+    // ToDo: clean handling of OPTIONS request methods, caching of preflight (maybe directly from apache, no proxy transition, set Access-Control-Max-Age?)
+    // see: https://stackoverflow.com/questions/15734031/why-does-the-preflight-options-request-of-an-authenticated-cors-request-work-in
+    $client = ($no_credentials) ? "isam" : $_SERVER['PHP_AUTH_USER'];
+    $token = ($no_credentials) ? "notoken" : $_SERVER['PHP_AUTH_PW'];
+
     \XapiProxy\DataService::initIlias($client,$token);
-    
+
     $types_data = ilXapiCmi5Type::_getTypesData()[0];
     $endpoint = $types_data['lrs_endpoint'];
     $auth = 'Basic ' . base64_encode($types_data['lrs_key'] . ':' . $types_data['lrs_secret']);
 	$target = array(  // needs validation of request before!
-		"upstream" =>  $endpoint, 
+		"upstream" =>  $endpoint,
 		"authorization" => $auth,
         "client" => $client,
         "token" => $token
 	);
-    //_log(var_export($target,TRUE));
+    _log(var_export($target,TRUE));
 	return $target;
 }
 
