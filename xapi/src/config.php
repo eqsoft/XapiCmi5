@@ -10,21 +10,13 @@ use GuzzleHttp\RequestOptions;
 
 function getTarget() { // are there calls without credentials???
     $no_credentials = (empty($_SERVER['PHP_AUTH_USER']) && empty($_SERVER['PHP_AUTH_PW']));
-    //_log($_SERVER["REQUEST_METHOD"]);
-    //if ($_SERVER["REQUEST_METHOD"] != "OPTIONS" && $no_credentials) {
     if ($no_credentials) {
 		_log("no credentials: " . $_SERVER["REQUEST_METHOD"]);
-		//_log(var_export($_SERVER,TRUE));
 		header('HTTP/1.1 401 Authorization Required');
-		//header('WWW-Authenticate: Basic realm="Access denied"');
 		exit;
 	}
-    // ToDo: clean handling of OPTIONS request methods, caching of preflight (maybe directly from apache, no proxy transition, set Access-Control-Max-Age?)
-    // see: https://stackoverflow.com/questions/15734031/why-does-the-preflight-options-request-of-an-authenticated-cors-request-work-in
     $client = $_SERVER['PHP_AUTH_USER'];
-    //$client = ($no_credentials) ? "isam" : $_SERVER['PHP_AUTH_USER'];
     $token = $_SERVER['PHP_AUTH_PW'];
-    //$token = ($no_credentials) ? "notoken" : $_SERVER['PHP_AUTH_PW'];
 
     \XapiProxy\DataService::initIlias($client,$token);
 
@@ -37,7 +29,6 @@ function getTarget() { // are there calls without credentials???
         "client" => $client,
         "token" => $token
 	);
-    //_log(var_export($target,TRUE));
 	return $target;
 }
 

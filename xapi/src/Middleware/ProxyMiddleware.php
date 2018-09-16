@@ -44,7 +44,7 @@ class ProxyMiddleware
                 );
                 $request = \GuzzleHttp\Psr7\modify_request($request, $changes);
                 if ($request->getMethod() === "GET" ) {
-                    $this->_log($request->getUri());
+                    //$this->_log($request->getUri());
                 }
                 $response = $this->guzzle_client->send($request,$this->request_options);
                 return $next($request, $response);

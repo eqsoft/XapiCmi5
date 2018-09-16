@@ -119,13 +119,13 @@ class RequestFilterXapi
                 
                 if (isset($obj->context) && isset($obj->context->contextActivities) && isset($obj->context->contextActivities->parent)) {
                     if ($obj->object->id != $obj->context->contextActivities->parent) {
-                        $this->_log("no root context: " . $obj->object->id . " ...ignored verb " . $verb);
+                        //$this->_log("no root context: " . $obj->object->id . " ...ignored verb " . $verb);
                         return;
                     }
                 }
                 if (isset($obj->result) && isset($obj->result->score) && isset($obj->result->score->scaled)) {
                     $score = $obj->result->score->scaled;
-                    $this->_log('score:' . $score);
+                    //$this->_log('score:' . $score);
                         
                 }
                 /*
