@@ -145,9 +145,9 @@ lp_mode#:#Modus
 lp_inactive#:#Inaktiv
 lp_inactive_info#:#Für dieses Objekt wird kein Lernfortschritt gespeichert.
 lp_active#:#Aktiv
-lp_active_info#:#Der Status "In Bearbeitung" wird gesetzt, sobald der Inhalt aufgerufen wird. Der Status "Bearbeitet" oder "Nicht bestanden" wird durch das Ergebnis aus einem LTI-Aufruf gesetzt.
-lp_threshold#:#Schwellwert für "Bearbeitet"
-lp_threshold_info#:#Falls das per LTI übertragene Ergebnis gleich oder höher als diser Schwellwert ist, wird der Status auf "Bearbeitet" gesetzt, andernfalls auf "Nicht bestanden".
+lp_active_info#:#Der Status "In Bearbeitung" wird gesetzt, sobald der Inhalt aufgerufen wird.
+lp_threshold#:#Schwellenwert für "Bearbeitet"
+lp_threshold_info#:#Falls das übertragene Ergebnis gleich oder höher als diser Schwellenwert ist, wird der Status auf "Bearbeitet" gesetzt, andernfalls auf "Nicht bestanden".
 xxcf_read_learning_progress#:#Lernforschritt ansehen
 xxcf_edit_learning_progress#:#Lernfortschritt bearbeiten
 svg_icon#:#SVG-Icon für alle Größen

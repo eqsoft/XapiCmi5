@@ -146,9 +146,9 @@ lp_mode#:#Modus
 lp_inactive#:#Inactive
 lp_inactive_info#:#The learning progress is not stored for this object.
 lp_active#:#Active
-lp_active_info#:#The 'In Progress' status is set when the content is viewed. The 'Completed' or 'Failed' status is set by the result of an LTI call.
+lp_active_info#:#The 'In Progress' status is set when the content is viewed.
 lp_threshold#:#Passing Threshold
-lp_threshold_info#:#If a transmitted LTI outcome is equal or higher than this threshold, then the status is set to 'Completed', otherwise to 'Failed'.
+lp_threshold_info#:#If a transmitted outcome is equal or higher than this threshold, then the status is set to 'Completed', otherwise to 'Failed'.
 xxcf_read_learning_progress#:#View Learning Progress
 xxcf_edit_learning_progress#:#Edit Learning Progress
 svg_icon#:#SVG Icon for All Sizes
