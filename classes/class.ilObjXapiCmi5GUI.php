@@ -7,6 +7,7 @@ include_once('./Services/Repository/classes/class.ilObjectPluginGUI.php');
 include_once('./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/classes/class.ilObjXapiCmi5.php');
 include_once('./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/classes/class.ilXapiCmi5Type.php');
 
+
 /**
  * xApi plugin: repository object GUI
  *
@@ -14,7 +15,7 @@ include_once('./Customizing/global/plugins/Services/Repository/RepositoryObject/
  * @version $Id$
  * 
  * @ilCtrl_isCalledBy ilObjXapiCmi5GUI: ilRepositoryGUI, ilAdministrationGUI, ilObjPluginDispatchGUI
- * @ilCtrl_Calls ilObjXapiCmi5GUI: ilPermissionGUI, ilInfoScreenGUI, ilObjectCopyGUI, ilCommonactionDispatcherGUI, ilLearningProgressGUI
+ * @ilCtrl_Calls ilObjXapiCmi5GUI: ilPermissionGUI, ilInfoScreenGUI, ilObjectCopyGUI, ilCommonactionDispatcherGUI, ilLearningProgressGUI, ilExportGUI
  */
 class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 {
@@ -35,6 +36,34 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
     {
         // anything needed after object has been constructed
     }
+
+	public function executeCommand() {
+		global $tpl;
+
+
+		$next_class = $this->ctrl->getNextClass($this);
+		switch ($next_class) {
+			case 'ilexportgui':
+				// only if plugin supports it?
+				$tpl->setTitle($this->object->getTitle());
+				$tpl->setTitleIcon(ilObject::_getIcon($this->object->getId()));
+				$this->setLocator();
+				$tpl->getStandardTemplate();
+				$this->setTabs();
+				include_once './Services/Export/classes/class.ilExportGUI.php';
+				$this->tabs_gui->activateTab("export");
+				$exp = new ilExportGUI($this);
+				$exp->addFormat('xml');
+				$this->ctrl->forwardCommand($exp);
+				$tpl->show();
+				return;
+				break;
+		}
+
+		$return_value = parent::executeCommand();
+
+		return $return_value;
+	}
 
     /**
      * Get type.
@@ -107,6 +136,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         {
         	case "edit":
         	case "update":
+			case "showExport":
         		$this->checkPermission("write");
             	// $this->setSubTabs("edit");
             	
@@ -135,10 +165,12 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 				else
 				{
 					$this->checkPermission("read");
-
-					if ($this->object->typedef->getAvailability() == ilXapiCmi5Type::AVAILABILITY_NONE)
-					{
-						$ilErr->raiseError($this->txt('xxcf_message_type_not_available'), $ilErr->MESSAGE);
+					if ($this->object->getTypeId() == "") {
+						$pl = new ilXapiCmi5Plugin();
+						$ilErr->raiseError($pl->txt('type_not_set'), $ilErr->MESSAGE);
+					} else 
+					if ($this->object->typedef->getAvailability() == ilXapiCmi5Type::AVAILABILITY_NONE)	{
+						$ilErr->raiseError($this->lng->txt('xxcf_message_type_not_available'), $ilErr->MESSAGE);
 					}
 
 					if (!$cmd)
@@ -179,6 +211,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         if ($this->checkPermissionBool("write"))
         {
             $ilTabs->addTab("edit", $this->lng->txt("settings"), $ilCtrl->getLinkTarget($this, "edit"));
+			$ilTabs->addTab("export", $this->lng->txt("export"), $ilCtrl->getLinkTargetByClass("ilexportgui", ""));
         }
 
         include_once("Services/Tracking/classes/class.ilObjUserTracking.php");
@@ -306,14 +339,6 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
                 // break;
 
             case ilXapiCmi5Type::LAUNCH_TYPE_EMBED:
-    			// if ($_GET['lti_msg'])
-    			// {
-    				// ilUtil::sendInfo(ilUtil::stripSlashes($_GET['lti_msg']), true);
-    			// }
-    			// if ($_GET['lti_errormsg'])
-    			// {
-    				// ilUtil::sendFailure(ilUtil::stripSlashes($_GET['lti_errormsg']), true);
-    			// }
     			$this->ctrl->redirect($this, "viewEmbed");
                 break;
 
@@ -417,7 +442,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
      *
      * @access	public
      */
-    function create()
+    function createX()
     {
         global $rbacsystem, $ilErr;
         
@@ -448,7 +473,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
      *
      * @access	public
      */
-    function save()
+    function saveX()
     {
         global $rbacsystem, $ilErr;
         
@@ -540,13 +565,13 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         $this->form = new ilPropertyFormGUI();
         $this->form->setFormAction($this->ctrl->getFormAction($this));
 
-        if ($a_mode != "create")
-        {
-	        $item = new ilCustomInputGUI($this->lng->txt('type'), '');
-	        $item->setHtml($this->object->typedef->getTitle());
-	        $item->setInfo($this->object->typedef->getDescription());
-	        $this->form->addItem($item);
-        }
+        // if ($a_mode != "create")
+        // {
+	        // $item = new ilCustomInputGUI($this->lng->txt('type'), '');
+	        // $item->setHtml($this->object->typedef->getTitle());
+	        // $item->setInfo($this->object->typedef->getDescription());
+	        // $this->form->addItem($item);
+        // }
         
         $item = new ilTextInputGUI($this->lng->txt('title'), 'title');
         $item->setSize(40);
@@ -563,8 +588,8 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 		$item->setValue($a_values['description']);        
         $this->form->addItem($item);
        
-        if ($a_mode == "create")
-        {
+        // if ($a_mode == "create")
+        // {
             $item = new ilRadioGroupInputGUI($this->lng->txt('type'), 'type_id');
             $item->setRequired(true);
             $types = ilXapiCmi5Type::_getTypesData(false, ilXapiCmi5Type::AVAILABILITY_CREATE);
@@ -573,14 +598,15 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
                 $option = new ilRadioOption($type['title'], $type['type_id'], $type['description']);
                 $item->addOption($option);
             }
+			$item->setValue($this->object->typedef->getTypeId());
             $this->form->addItem($item);
 
-            $this->form->setTitle($this->txt('xxcf_new'));
-            $this->form->addCommandButton((!$this->checkCreationMode() ? 'update' : 'save'), $this->lng->txt('save'));
-            $this->form->addCommandButton('cancelCreate', $this->lng->txt("cancel"));
-        }
-        else
-        {
+            // $this->form->setTitle($this->txt('xxcf_new'));
+            // $this->form->addCommandButton((!$this->checkCreationMode() ? 'update' : 'save'), $this->lng->txt('save'));
+            // $this->form->addCommandButton('cancelCreate', $this->lng->txt("cancel"));
+        // }
+        // else
+        // {
             $item = new ilCheckboxInputGUI($this->lng->txt('online'), 'online');
             $item->setInfo($this->txt("xxcf_online_info"));
 			$item->setValue("1");
@@ -686,7 +712,7 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
             $this->form->addCommandButton("update", $this->lng->txt("save"));
             $this->form->addCommandButton("view", $this->lng->txt("cancel"));
 
-        }
+        // }
     }
     
 
@@ -857,6 +883,28 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         $value = $obj->checkToken();
         echo $value;
     }
+	
+	protected function showExportObject() {
+		require_once("./Services/Export/classes/class.ilExportGUI.php");
+		$export = new ilExportGUI($this);
+		$export->addFormat("xml");
+		$ret = $this->ctrl->forwardCommand($export);
+	}
+	/**
+	 * erase!
+	 */
+	private function activateTab() {
+		$next_class = $this->ctrl->getCmdClass();
+
+		switch($next_class) {
+			case 'ilexportgui':
+				$this->tabs->activateTab("export");
+				break;
+		}
+
+		return;
+	}
+
 }
 
 ?>

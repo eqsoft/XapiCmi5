@@ -234,3 +234,7 @@ lp_mastery_score#:#Bearbeitet wenn Mindestpunktestand erreicht
 lp_mastery_score_info#:#Der ILIAS-Lernstatus wechselt zu 'bearbeitet' wenn die Ressource einen Punktestand sendet, der den hier anzugebenden Mindestpunktestand erreicht.
 lp_fix_condition#:#'bearbeitet' einfrieren
 lp_fix_condition_info#:#Ist der ILIAS-Lernstatus 'bearbeitet' erreicht, bleibt er erhalten.
+type_name_not_available#:#Objekt konnte nicht angelegt werden. LRS-Typ mit dem Namen '%s' ist nicht vorhanden. Bitte kontaktieren Sie Ihren Administrator.
+type_not_set#:#LRS-Typ fehlt.
+objs_xxcf_duplicate#:#Kopieren.
+obj_xxcf_duplicate#:#Kopieren.

@@ -121,6 +121,28 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	public function getTypeId() {
 		return $this->type_id;
 	}
+	
+	public function setTypeName($a_type_name) {
+		global $ilDB;
+		$type_id = 0;
+		$query = "SELECT type_id FROM xxcf_data_types where type_name = " . $ilDB->quote($a_type_name, 'text') . " ORDER BY type_id";
+		$res = $ilDB->query($query);
+		while ($row = $ilDB->fetchAssoc($res)) {
+			$type_id = $row['type_id'];
+		}
+		if ($type_id != 0) {
+			$this->setTypeId($type_id);
+			$typedef = new ilXapiCmi5Type($this->getTypeId());
+			$typedef->setName($a_type_name);
+		}
+	}
+	/**
+	 * Get Type Name for Export/Import
+	 */
+	public function getTypeName() {
+		$typedef = new ilXapiCmi5Type($this->getTypeId());
+		return $typedef->getName();
+	}
 
 	/**
 	 * Set vailability type
@@ -643,101 +665,6 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 		return $value;
 	}
 
-	/**
-	 * initialize the fields for template processing
-	 */
-	// private function initFields() {
-		// global $ilUser, $ilias, $ilSetting;
-
-		// if (is_array($this->fields)) {
-			// return;
-		// }
-		// $this->fields = array();
-
-
-		// //
-		// // ILIAS fields (type and encoding are commmon to all)
-		// //
-		// $ilias_names = array(
-			// // object information
-			// 'ILIAS_REF_ID',
-			// 'ILIAS_TITLE',
-			// 'ILIAS_DESCRIPTION',
-			// 'ILIAS_INSTRUCTIONS',
-			// // object context
-			// 'ILIAS_CONTEXT_ID',
-			// 'ILIAS_CONTEXT_TYPE',
-			// 'ILIAS_CONTEXT_TITLE',
-			// // call-time imformation
-			// // 'ID',
-			// 'ILIAS_REMOTE_ADDR',
-			// 'ILIAS_TIME',
-			// 'ILIAS_TIMESTAMP',
-			// 'ILIAS_SESSION_ID',
-			// 'ILIAS_TOKEN',
-			// 'ILIAS_RESULT_ID',
-			// // service urls
-			// 'ILIAS_CALLBACK_URL',
-			// 'ILIAS_EVENT_LOG_URL',
-			// 'ILIAS_RETURN_URL',
-			// 'ILIAS_RESULT_URL',
-			// // user information
-			// 'ILIAS_USER_ID',
-			// 'ILIAS_USER_CODE',
-			// 'ILIAS_USER_LOGIN',
-			// 'ILIAS_USER_FIRSTNAME',
-			// 'ILIAS_USER_LASTNAME',
-			// 'ILIAS_USER_FULLNAME',
-			// 'ILIAS_USER_EMAIL',
-			// 'ILIAS_USER_IMAGE',
-			// 'ILIAS_USER_LANG',
-			// 'ILIAS_USER_WRITE_ACCESS',
-			// // platform information
-			// 'ILIAS_VERSION',
-			// 'ILIAS_CONTACT_EMAIL',
-			// 'ILIAS_CLIENT_ID',
-			// 'ILIAS_HTTP_PATH',
-			// 'ILIAS_LMS_URL',
-			// 'ILIAS_LMS_GUID',
-			// 'ILIAS_LMS_NAME',
-			// 'ILIAS_LMS_DESCRIPTION',
-		// );
-		// foreach ($ilias_names as $name) {
-			// $field = array();
-			// $field['field_name'] = $name;
-			// $field['field_type'] = ilXapiCmi5Type::FIELDTYPE_ILIAS;
-			// $field['encoding'] = '';
-
-			// $this->fields[$field['field_name']] = $field;
-		// }
-
-		// //
-		// // type specific fields
-		// //
-        
-        // return; // functions below are still not defined in ilXapiCmi5Type
-        
-		// $type_fields = $this->typedef->getFieldsAssoc();
-		// $type_values = $this->typedef->getInputValues();
-		// $input_values = $this->getInputValues();
-		// foreach ($type_fields as $field) {
-			// // set value to user input
-			// if ($field['field_type'] != ilXapiCmi5Type::FIELDTYPE_TEMPLATE and $field['field_type'] != ilXapiCmi5Type::FIELDTYPE_CALCULATED) {
-				// switch ($field['level']) {
-					// case "type":
-						// $field['field_value'] = $type_values[$field['field_name']];
-						// break;
-
-					// case "object":
-					// default:
-						// $field['field_value'] = $input_values[$field['field_name']];
-						// break;
-				// }
-			// }
-
-			// $this->fields[$field['field_name']] = $field;
-		// }
-	// }
 
 	/**
 	 * get info about the context in which the link is used
@@ -922,20 +849,18 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 		$row = $ilDB->fetchObject($res);
 		
 		if ($row) {
-			$this->setAvailabilityType($row->availability_type);
 			$this->setTypeId($row->type_id);
 			$this->setInstructions($row->instructions);
+			$this->setAvailabilityType($row->availability_type);
 			// $this->setMetaDataXML($row->meta_data_xml);
 			$this->setLaunchUrl($row->launch_url);
 			$this->setActivityId($row->activity_id);
-			// $this->setLaunchKey($row->launch_key);
-			// $this->setLaunchSecret($row->launch_secret);
 			$this->setShowDebug($row->show_debug);
 			$this->setUseFetch($row->use_fetch);
 			$this->setPrivacyIdent($row->privacy_ident);
 			$this->setPrivacyName($row->privacy_name);
 			$this->setLPMode($row->lp_mode);
-			// $this->setLPThreshold($row->lp_threshold);
+			$this->setLPThreshold($row->lp_threshold);
 		}
 	}
 
@@ -945,27 +870,21 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 	function doCloneObject($new_obj, $a_target_id, $a_copy_id = null) { //TODO
 		global $ilDB;
 		
-		//Settings filling
 		$ilDB->insert('xxcf_data_settings', array(
 			'obj_id' => array('integer', $new_obj->getId()),
 			'type_id' => array('integer', $this->getTypeId()),
-			'availability_type' => array('integer', $this->getAvailabilityType()),
 			'instructions' => array('text', $this->getInstructions()),
+			'availability_type' => array('integer', $this->getAvailabilityType()),
 			// 'meta_data_xml' => array('text', $this->getMetaDataXML()),
+			'launch_url' => array('text', $this->getLaunchUrl()),
+			'activity_id' => array('text', $this->getActivityId()),
+			'show_debug' => array('integer', $this->getShowDebug()),
+			'use_fetch' => array('integer', $this->getUseFetch()),
+			'privacy_ident' => array('integer', $this->getPrivacyIdent()),
+			'privacy_name' => array('integer', $this->getPrivacyName()),
 			'lp_mode' => array('integer', $this->getLPMode()),
 			'lp_threshold' => array('float', $this->getLPThreshold())
 		 ));
-		//Value filling
-		$values = $this->getInputValues();
-		
-		foreach($values as $it => $value){
-			$ilDB->insert('xxcf_data_values', array(
-			'obj_id' => array('integer', $new_obj->getId()),
-			'field_name' => array('text', $it),
-			'field_value' => array('text', $value)
-				)
-		);
-		}
 	}
 
 	function createToken($time) {

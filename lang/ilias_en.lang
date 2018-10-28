@@ -54,6 +54,7 @@ types_list#:#List of xAPI-Object types
 untrashed_usages#:#Number of usages
 xxcf_edit#:#Edit xAPI-Object
 xapi_plugin_configuration#:#Configuration of the xAPI Plugin
+type_name_not_available#:#Object could not be created. LRS-type with the name '%s' does not exist. Please contact your administrator.
 xxcf_demo#:#DEMO
 type_title#:#Title
 type_desc1#:#This is a demo type to demonstrate the use of input fields and templates
@@ -234,3 +235,6 @@ lp_mastery_score#:#Edited when minimum score is achieved
 lp_mastery_score_info#:#The ILIAS learning status switches to 'edited' as soon as the resource sends a score that achieves the minimum score recorded here. 
 lp_fix_condition#:#'edited' suspended
 lp_fix_condition_info#:#Once the ILIAS Learning status 'edited' is achieved, it remains.
+type_not_set#:#LRS-type is missing.
+objs_xxcf_duplicate#:#Copy
+obj_xxcf_duplicate#:#Copy
