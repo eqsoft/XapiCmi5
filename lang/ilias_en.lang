@@ -143,7 +143,7 @@ title_info#:#Give the object a title
 settings#:#Settings
 lp_settings#:#Learning Progress Settings
 lp_mode#:#Modus
-lp_inactive#:#Inactive
+lp_inactive#:#The learning progress is deactivated.
 lp_inactive_info#:#The learning progress is not stored for this object.
 lp_active#:#Active
 lp_active_info#:#The 'In Progress' status is set when the content is viewed.

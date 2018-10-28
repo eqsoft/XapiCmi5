@@ -116,7 +116,7 @@ type_obj#:#Objekt-Typ
 ref_id#:#Typ-ID
 session_id#:#Sitzung
 call_time#:#Aufruf-Zeit
-edit#:#xAPI-Objekt bearbeiten
+edit#:#Einstellungen
 log_set#:#Logging verwenden
 log_on#:#Ja
 log_off#:#Nein
@@ -142,7 +142,7 @@ title_info#:#Geben Sie dem Objekt einen Titel
 settings#:#Einstellungen
 lp_settings#:#Lernfortschritts-Einstellungen
 lp_mode#:#Modus
-lp_inactive#:#Inaktiv
+lp_inactive#:#Lernfortschritt ist deaktiviert.
 lp_inactive_info#:#Für dieses Objekt wird kein Lernfortschritt gespeichert.
 lp_active#:#Aktiv
 lp_active_info#:#Der Status "In Bearbeitung" wird gesetzt, sobald der Inhalt aufgerufen wird.
