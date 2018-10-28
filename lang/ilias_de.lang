@@ -181,17 +181,17 @@ conf_lrs_secret#:#Geheimnis / Password
 info_lrs_secret#:#Geteiltes Geheimnis / Password, z.B. secret
 conf_external_lrs#:#Externer LRS
 info_external_lrs#:#Bei einem externen LRS wird ein Hinweis an die Benutzer angezeigt. Ein externer LRS ist dadurch gegennzeichnet, dass der Betreiber dieser ILIAS-Installation unzureichenden Einfluss auf den LRS hat. Dies trifft dann zu, wenn keine Rechte zum Löschen vorliegen.
-conf_privacy_ident#:#Benutzerkennung an LRS
+conf_privacy_ident#:#Benutzerkennung (Voreinstellung)
 info_privacy_ident#:#Standard ist oftmals die E-Mail-Adresse.
-conf_privacy_ident_0#:#Code
-info_privacy_ident_0#:#Code senden. Dieser ist mit jedem Aufruf identisch, erlaubt aber keinen direkten Rückschluss auf den ursprünglichen Nutzer.
-conf_privacy_ident_1#:#Numerische Kennung
+conf_privacy_ident_0#:#Kombination aus User-Id, URL und Mandant
+info_privacy_ident_0#:#Dieser ist mit jedem Aufruf identisch, erlaubt aber keinen direkten Rückschluss auf den ursprünglichen Nutzer.
+conf_privacy_ident_1#:#Nutzer-ID
 info_privacy_ident_1#:#Sendet die intere numerische Nutzer-ID als Kennung
 conf_privacy_ident_2#:#Login
 info_privacy_ident_2#:#Sendet den ILIAS-Loginnamen als Kennung
 conf_privacy_ident_3#:#E-Mail-Adresse
 info_privacy_ident_3#:#Sendet die E-Mail-Adresse des Nutzers als Kennung (Achtung: Eine E-Mail-Adresse darf nicht von mehreren Nutzern genutzt werden!)
-conf_privacy_name#:#Benutzername an LRS
+conf_privacy_name#:#Benutzername (Voreinstellung)
 info_privacy_name#:#Das Senden eines Benutzernamens ist in der Regel nicht erforderlich.
 conf_privacy_name_0#:#Keiner
 info_privacy_name_0#:#Sendet '-' statt eines Namens

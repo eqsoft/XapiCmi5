@@ -236,10 +236,10 @@ class ilXapiCmi5ConfigGUI extends ilPluginConfigGUI
 		$item = new ilRadioGroupInputGUI($this->plugin_object->txt('conf_privacy_ident'), 'privacy_ident');
 		$op = new ilRadioOption($this->plugin_object->txt('conf_privacy_ident_0'), 0);
 		$item->addOption($op);
-		$op = new ilRadioOption($this->plugin_object->txt('conf_privacy_ident_1'), 1);
-		$item->addOption($op);
-		$op = new ilRadioOption($this->plugin_object->txt('conf_privacy_ident_2'), 2);
-		$item->addOption($op);
+		// $op = new ilRadioOption($this->plugin_object->txt('conf_privacy_ident_1'), 1);
+		// $item->addOption($op);
+		// $op = new ilRadioOption($this->plugin_object->txt('conf_privacy_ident_2'), 2);
+		// $item->addOption($op);
 		$op = new ilRadioOption($this->plugin_object->txt('conf_privacy_ident_3'), 3);
 		$item->addOption($op);
 		$item->setValue($this->type->getPrivacyIdent());

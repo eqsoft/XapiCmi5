@@ -182,17 +182,17 @@ conf_lrs_secret#:#Secret / Password
 info_lrs_secret#:#Shared secret / Password, i.e. secret
 conf_external_lrs#:#External LRS
 info_external_lrs#:#A hint will be shown to users when dealing with an external LRS. An external LRS is characterized by insufficient influence on the LRS the by the operator of the ILIAS-installation. This is the case when there are no rights to delete. 
-conf_privacy_ident#:#User identification to LRS
+conf_privacy_ident#:#User identification (Default)
 info_privacy_ident#:#Standard is frequently the email address.
-conf_privacy_ident_0#:#Code
+conf_privacy_ident_0#:#Combination of user-id, URL and client
 info_privacy_ident_0#:#Send code. This is identical to each call, but doesn't allow a direct conclusion about the former user. 
-conf_privacy_ident_1#:#Numerical identification
+conf_privacy_ident_1#:#User-Id
 info_privacy_ident_1#:#Sends the internal numerical user-ID as identification
 conf_privacy_ident_2#:#Login
 info_privacy_ident_2#:#Sends the internal numerical user-ID as identification
 conf_privacy_ident_3#:#E-Mail Address
 info_privacy_ident_3#:#Sends E-Mail Address of user as identification (Warning: an E-Mail Address is not to be used by multiple users!)
-conf_privacy_name#:#User name to LRS
+conf_privacy_name#:#User name (Default)
 info_privacy_name#:#Sending an user name is usually not required.
 conf_privacy_name_0#:#No one
 info_privacy_name_0#:#Sends '-' instead of a name 

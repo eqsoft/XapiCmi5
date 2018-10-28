@@ -365,19 +365,40 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 	    $activityId = $this->object->getActivityId();
 	    $registration = $this->getRegistration();
         switch ($this->object->getPrivacyIdent()) {
-            case ilXapiCmi5Type::PRIVACY_IDENT_CODE :
-            case ilXapiCmi5Type::PRIVACY_IDENT_NUMERIC :
-                $privacy_ident = $ilUser->getId();
-                break;
-            case ilXapiCmi5Type::PRIVACY_IDENT_LOGIN :
-                $privacy_ident = $ilUser->getLogin();
-                break;
-            case ilXapiCmi5Type::PRIVACY_IDENT_EMAIL :
-                $privacy_ident = $ilUser->getEmail();
-                break;
-            default :
-                $privacy_ident = $ilUser->getEmail();;
+			case ilXapiCmi5Type::PRIVACY_IDENT_CODE :
+				$iliasDomain = substr(ILIAS_HTTP_PATH,7);
+				if (substr($iliasDomain,0,1) == "\/") $iliasDomain = substr($iliasDomain,1);
+				if (substr($iliasDomain,0,4) == "www.") $iliasDomain = substr($iliasDomain,4);
+				$privacy_ident = ''.$ilUser->getId().'_'.str_replace('/','_',$iliasDomain).'_'.CLIENT_ID.'@iliassecretuser.de';
+				break;
+			case ilXapiCmi5Type::PRIVACY_IDENT_NUMERIC :
+				$privacy_ident = $ilUser->getId().'@iliassecretuser.de';
+				break;
+			case ilXapiCmi5Type::PRIVACY_IDENT_LOGIN :
+				$privacy_ident = $ilUser->getLogin();
+				break;
+			case ilXapiCmi5Type::PRIVACY_IDENT_EMAIL :
+				$privacy_ident = $ilUser->getEmail();
+				break;
+			default :
+				$privacy_ident = $ilUser->getEmail();;
         }
+		$privacy_name = "";
+		switch ($this->object->getPrivacyName()) {
+			case 0 :
+				$privacy_name = "";
+				break;
+			case 1 :
+				$privacy_name = $ilUser->getFirstname();
+				break;
+			case 2 :
+				$privacy_name = $this->lng->txt("salutation_".$ilUser->getGender()) .' '. $ilUser->getLastname();
+				break;
+			default :
+				$privacy_name = $ilUser->getFullname();;
+		}
+		
+		
         $this->tabs_gui->activateTab('viewEmbed');
 		$my_tpl = new ilTemplate('./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/templates/default/tpl.view_embed.html', true, true);
 
@@ -404,13 +425,13 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 			$my_tpl->setVariable('LRS_KEY', $this->object->typedef->getLrsKey());
 			$my_tpl->setVariable('LRS_SECRET', $this->object->typedef->getLrsSecret());
 			$my_tpl->setVariable('LRS_USER_ID', $privacy_ident); 
-			$my_tpl->setVariable('LRS_USER_NAME', $ilUser->getFullname()); // ToDo: get from privacy_name
+			$my_tpl->setVariable('LRS_USER_NAME', $privacy_name);
 			$my_tpl->parseCurrentBlock();
 		}
 
 		$my_tpl->setVariable('ILIAS_URL', ILIAS_HTTP_PATH);
         $my_tpl->setVariable('XAPI_USER_ID', $privacy_ident); 
-        $my_tpl->setVariable('XAPI_USER_NAME', $ilUser->getFullname());
+        $my_tpl->setVariable('XAPI_USER_NAME', $privacy_name);
         $my_tpl->setVariable('XAPI_ACTIVITY_ID', $activityId);
         $my_tpl->setVariable('XAPI_REGISTRATION', $registration);
         $my_tpl->setVariable('LAUNCH_URL', $this->object->getLaunchUrl());
@@ -664,10 +685,10 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
 			$item = new ilRadioGroupInputGUI($this->txt('content_privacy_ident'), 'privacy_ident');
 			$op = new ilRadioOption($this->txt('conf_privacy_ident_0'), 0);
 			$item->addOption($op);
-			$op = new ilRadioOption($this->txt('conf_privacy_ident_1'), 1);
-			$item->addOption($op);
-			$op = new ilRadioOption($this->txt('conf_privacy_ident_2'), 2);
-			$item->addOption($op);
+			// $op = new ilRadioOption($this->txt('conf_privacy_ident_1'), 1);
+			// $item->addOption($op);
+			// $op = new ilRadioOption($this->txt('conf_privacy_ident_2'), 2);
+			// $item->addOption($op);
 			$op = new ilRadioOption($this->txt('conf_privacy_ident_3'), 3);
 			$item->addOption($op);
 			$item->setValue($a_values['privacy_ident']);
