@@ -238,3 +238,4 @@ type_name_not_available#:#Objekt konnte nicht angelegt werden. LRS-Typ mit dem N
 type_not_set#:#LRS-Typ fehlt.
 objs_xxcf_duplicate#:#Kopieren.
 obj_xxcf_duplicate#:#Kopieren.
+no_type_available_for_create#:#Kein LRS-Typ erlaubt aktuell das Hinzufügen dieses Objekts.

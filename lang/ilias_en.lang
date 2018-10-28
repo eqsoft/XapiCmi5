@@ -238,3 +238,4 @@ lp_fix_condition_info#:#Once the ILIAS Learning status 'edited' is achieved, it 
 type_not_set#:#LRS-type is missing.
 objs_xxcf_duplicate#:#Copy
 obj_xxcf_duplicate#:#Copy
+no_type_available_for_create#:#No LRS-type is available to create such an object.

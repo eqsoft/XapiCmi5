@@ -442,20 +442,15 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
      *
      * @access	public
      */
-    function createX()
+    function create()
     {
-        global $rbacsystem, $ilErr;
-        
-       $this->setCreationMode(true);
-        if (!$rbacsystem->checkAccess("create", $_GET["ref_id"], $this->type))
-        {
-            $ilErr->raiseError($this->lng->txt("permission_denied"), $ilErr->MESSAGE);
-        }
-		else
-        {
-            $this->initForm("create");
-            $this->tpl->setVariable('ADM_CONTENT', $this->form->getHTML());
-        }
+		global $ilErr;
+		if (ilXapiCmi5Type::getCountTypesForCreate() == 0) {
+			$pl = new ilXapiCmi5Plugin();
+			$ilErr->raiseError($pl->txt('no_type_available_for_create'), $ilErr->MESSAGE);
+		} else {
+			parent::create();
+		}
     }
     
     /**

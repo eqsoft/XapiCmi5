@@ -560,6 +560,14 @@ class ilXapiCmi5Type
 		);
 		return $a_s;
 	}
+	
+	static function getCountTypesForCreate() {
+		global $ilDB;
+		$query = "SELECT COUNT(*) counter FROM xxcf_data_types WHERE availability = " . $ilDB->quote(self::AVAILABILITY_CREATE, 'integer');
+		$res = $ilDB->query($query);
+		$row = $ilDB->fetchObject($res);
+		return $row->counter;
+	}
 }
 
 ?>
