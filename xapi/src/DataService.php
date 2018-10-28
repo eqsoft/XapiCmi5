@@ -30,26 +30,29 @@ class DataService
 		define('IL_COOKIE_DOMAIN', '');
         require_once('Services/Context/classes/class.ilContext.php');
          \ilContext::init(\ilContext::CONTEXT_SCORM);
+		 //UK
+		 require_once("Services/Init/classes/class.ilInitialisation.php");
+		\ilInitialisation::initILIAS();
         // Remember original values
-        $_ORG_SERVER = array(
-          'HTTP_HOST'    => $_SERVER['HTTP_HOST'],
-          'REQUEST_URI'  => $_SERVER['REQUEST_URI'],
-          'PHP_SELF'     => $_SERVER['PHP_SELF'],
-        );
-        // Overwrite $_SERVER entries which would confuse ILIAS during initialisation
-        $_SERVER['REQUEST_URI'] = '';
-        $_SERVER['PHP_SELF']    = '/index.php';
-        $_SERVER['HTTP_HOST']   = self::getIniHost();
-        require_once "./Services/Utilities/classes/class.ilUtil.php";
-        //ilInitialisation::initIliasIniFile();
-        ilInitialisation::initClientIniFile();
-        ilInitialisation::initDatabase();
+        // $_ORG_SERVER = array(
+          // 'HTTP_HOST'    => $_SERVER['HTTP_HOST'],
+          // 'REQUEST_URI'  => $_SERVER['REQUEST_URI'],
+          // 'PHP_SELF'     => $_SERVER['PHP_SELF'],
+        // );
+        // // Overwrite $_SERVER entries which would confuse ILIAS during initialisation
+        // $_SERVER['REQUEST_URI'] = '';
+        // $_SERVER['PHP_SELF']    = '/index.php';
+        // $_SERVER['HTTP_HOST']   = self::getIniHost();
+        // require_once "./Services/Utilities/classes/class.ilUtil.php";
+        // //ilInitialisation::initIliasIniFile();
+        // ilInitialisation::initClientIniFile();
+        // ilInitialisation::initDatabase();
         
-        // Restore original, since this could lead to bad side-effects otherwise
-        $_SERVER['HTTP_HOST']   = $_ORG_SERVER['HTTP_HOST'];
-        $_SERVER['REQUEST_URI'] = $_ORG_SERVER['REQUEST_URI'];
-        $_SERVER['PHP_SELF']    = $_ORG_SERVER['PHP_SELF'];
-        //ilInitialisation::initLog();
+        // // Restore original, since this could lead to bad side-effects otherwise
+        // $_SERVER['HTTP_HOST']   = $_ORG_SERVER['HTTP_HOST'];
+        // $_SERVER['REQUEST_URI'] = $_ORG_SERVER['REQUEST_URI'];
+        // $_SERVER['PHP_SELF']    = $_ORG_SERVER['PHP_SELF'];
+        // ilInitialisation::initLog();//UK
     }
 }
 
@@ -108,5 +111,12 @@ class ilInitialisation extends \ilInitialisation {
             parent::initClientIniFile();
         }
     }
-    
+	
+	//UK
+    public static function initLog() {
+        if (!isset($GLOBALS['ilLog'])) {
+            parent::initLog();
+			parent::initGlobal("ilAppEventHandler", "ilAppEventHandler", "./Services/EventHandling/classes/class.ilAppEventHandler.php");
+        }
+    }
 }

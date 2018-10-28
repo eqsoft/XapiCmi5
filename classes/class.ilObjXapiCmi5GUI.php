@@ -468,38 +468,38 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
      *
      * @access	public
      */
-    function saveX()
-    {
-        global $rbacsystem, $ilErr;
+    // function saveX()
+    // {
+        // global $rbacsystem, $ilErr;
         
-            $new_type = $this->getType();
-            $_REQUEST["new_type"] = $new_type;
-            if (!$rbacsystem->checkAccess("create", $_GET["ref_id"], $new_type))
-            {
-                $ilErr->raiseError($this->lng->txt("permission_denied"), $ilErr->MESSAGE);
-            }
-            $this->initForm("create");
+            // $new_type = $this->getType();
+            // $_REQUEST["new_type"] = $new_type;
+            // if (!$rbacsystem->checkAccess("create", $_GET["ref_id"], $new_type))
+            // {
+                // $ilErr->raiseError($this->lng->txt("permission_denied"), $ilErr->MESSAGE);
+            // }
+            // $this->initForm("create");
 
-            if ($this->form->checkInput())
-            {
-                $this->object = new ilObjXapiCmi5;
-                $this->object->setType($this->type);
-                $this->object->create();
-                $this->object->createReference();
-                $this->object->putInTree($_GET["ref_id"]);
-                $this->object->setPermissions($_GET["ref_id"]);
-                $this->saveFormValues();
+            // if ($this->form->checkInput())
+            // {
+                // $this->object = new ilObjXapiCmi5;
+                // $this->object->setType($this->type);
+                // $this->object->create();
+                // $this->object->createReference();
+                // $this->object->putInTree($_GET["ref_id"]);
+                // $this->object->setPermissions($_GET["ref_id"]);
+                // $this->saveFormValues();
 
-                $this->ctrl->setParameter($this, "ref_id", $this->object->getRefId());
-                $this->afterSave($this->object);
- // die("save");       
-            } 
-            else
-            {
-                $this->form->setValuesByPost();
-                $this->tpl->setContent($this->form->getHTML());              
-            }
-    }
+                // $this->ctrl->setParameter($this, "ref_id", $this->object->getRefId());
+                // $this->afterSave($this->object);
+ // // die("save");       
+            // } 
+            // else
+            // {
+                // $this->form->setValuesByPost();
+                // $this->tpl->setContent($this->form->getHTML());              
+            // }
+    // }
 
     /**
      * Edit object
@@ -803,28 +803,28 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         $rg->addOption($ro);
         $ro = new ilRadioOption($this->txt('lp_passed'),ilObjXapiCmi5::LP_Passed, $this->txt('lp_passed_info'));
         $rg->addOption($ro);
-        $ro = new ilRadioOption($this->txt('lp_completed_and_passed'),ilObjXapiCmi5::LP_CompletedAndPassed, $this->txt('lp_completed_and_passed_info'));
-        $rg->addOption($ro);
+        // $ro = new ilRadioOption($this->txt('lp_completed_and_passed'),ilObjXapiCmi5::LP_CompletedAndPassed, $this->txt('lp_completed_and_passed_info'));
+        // $rg->addOption($ro);
         $ro = new ilRadioOption($this->txt('lp_completed_or_passed'),ilObjXapiCmi5::LP_CompletedOrPassed, $this->txt('lp_completed_or_passed_info'));
         $rg->addOption($ro);
         $form->addItem($rg);
 
-		$item = new ilCheckboxInputGUI($this->txt('use_score'), 'use_score');
-		$item->setInfo($this->txt("use_score_info"));
-		$item->setValue("1");
-		if ($this->object->getLPUseScore()) {
-			$item->setChecked(true);
-		}
-        $ni = new ilNumberInputGUI($this->txt('lp_threshold'),'lp_threshold');
-        $ni->setMinValue(0);
-        $ni->setMaxValue(1);
-        $ni->setDecimals(2);
-        $ni->setSize(4);
-        $ni->setRequired(true);
-        $ni->setValue($this->object->getLPThreshold());
-        $ni->setInfo($this->txt('lp_threshold_info'));
-        $item->addSubItem($ni);
-		$form->addItem($item);
+		// $item = new ilCheckboxInputGUI($this->txt('use_score'), 'use_score');
+		// $item->setInfo($this->txt("use_score_info"));
+		// $item->setValue("1");
+		// if ($this->object->getLPUseScore()) {
+			// $item->setChecked(true);
+		// }
+        // $ni = new ilNumberInputGUI($this->txt('lp_threshold'),'lp_threshold');
+        // $ni->setMinValue(0);
+        // $ni->setMaxValue(1);
+        // $ni->setDecimals(2);
+        // $ni->setSize(4);
+        // $ni->setRequired(true);
+        // $ni->setValue($this->object->getLPThreshold());
+        // $ni->setInfo($this->txt('lp_threshold_info'));
+        // $item->addSubItem($ni);
+		// $form->addItem($item);
 
 		
 		

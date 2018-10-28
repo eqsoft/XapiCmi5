@@ -107,8 +107,8 @@ class RequestFilterXapi
 			"http://adlnet.gov/expapi/verbs/completed" => "completed",
 			"http://adlnet.gov/expapi/verbs/passed" => "passed",
 			"http://adlnet.gov/expapi/verbs/failed" => "failed",
-			"http://adlnet.gov/expapi/verbs/terminated" =>	"terminated",
-			"http://adlnet.gov/expapi/verbs/satisfied" =>	"satisfied"
+			// "http://adlnet.gov/expapi/verbs/resumed" => "passed",
+			"http://adlnet.gov/expapi/verbs/satisfied" => "passed"
 		);
 		//$obj_id = "http://id.tincanapi.com/activity/tincan-prototypes/golf-example"; //ToDo: validate in xapi plugin classes
 		if (isset($obj->verb) && isset($obj->actor) && isset($obj->object)) {
@@ -135,7 +135,7 @@ class RequestFilterXapi
 					//_log("verb: " . $verb);
 				}
                 */
-                \ilObjXapiCmi5::handleLPStatusFromProxy($this->client, $this->token, $verb, $score);
+                \ilObjXapiCmi5::handleLPStatusFromProxy($this->client, $this->token, $sniff_verbs[$verb], $score);
 			}
 		} 
 	}

@@ -1021,18 +1021,54 @@ class ilObjXapiCmi5 extends ilObjectPlugin implements ilLPStatusPluginInterface
 		global $ilUser;
 
 		// track access for learning progress
-		if ($ilUser->getId() != ANONYMOUS_USER_ID and $this->getLPMode() >0)
+		if ($ilUser->getId() != ANONYMOUS_USER_ID && $this->getLPMode() >0)
 		{
 			$this->plugin->includeClass('class.ilXapiCmi5LPStatus.php');
 			ilXapiCmi5LPStatus::trackAccess($ilUser->getId(),$this->getId(), $this->getRefId());
 		}
 	}
+
+    public static function handleLPStatusFromProxy($client, $token, $status, $score) {
+		$LP_status = 1;
+		$LP_score = 0;
+		if ($score != "NOT_SET") $LP_score = $score;
+		global $ilDB;
+
+		$query = "SELECT xxcf_data_token.usr_id, xxcf_data_token.obj_id, xxcf_data_token.time, xxcf_data_settings.lp_mode"
+				." FROM xxcf_data_token, xxcf_data_settings WHERE token = " . $ilDB->quote($token, 'text')
+				." AND xxcf_data_settings.obj_id = xxcf_data_token.obj_id";
+		$result = $ilDB->query($query);
+		$row = $ilDB->fetchAssoc($result);
+		$usr_id = $row['usr_id'];
+		$obj_id = $row['obj_id'];
+		$lp_mode = $row['lp_mode'];
+		if ($lp_mode > 0 && $usr_id != ANONYMOUS_USER_ID) {
+			
+			if ($status == "completed" && ($lp_mode == self::LP_Completed || $lp_mode == self::LP_CompletedOrPassed) ) {
+				$LP_status = 2;
+			}
+			else if ($status == "passed" && ($lp_mode == self::LP_Passed || $lp_mode == self::LP_CompletedOrPassed) ) {
+				$LP_status = 2;
+			}
+			else if ($status == "failed" && $lp_mode != self::LP_Completed) {
+				$LP_status = 3;
+			}
+			require_once './Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/classes/class.ilXapiCmi5LPStatus.php';
+			// $this->plugin->includeClass('class.ilXapiCmi5LPStatus.php');
+			\ilXapiCmi5LPStatus::trackResult($usr_id, $obj_id, $LP_status, $LP_score);
+			
+		}
+        // self::_log("handleLPStatusFromProxy: ". $client . ":" . $token . ":" . $status . ":" . $score . ":" . $usr_id . ":" . $obj_id . ":" . ANONYMOUS_USER_ID);
+        // self::_log("handleLPStatusFromProxy: ". $client . ":" . $token . ":" . $status . ":" . $score);
+    }
+
     
     /******* TESTING *******/
     
-    public static function handleLPStatusFromProxy($client, $token, $status, $score) {
-        self::_log("handleLPStatusFromProxy: ". $client . ":" . $token . ":" . $status . ":" . $score);
-    }
+    // public static function handleLPStatusFromProxy($client, $token, $status, $score) {
+		// // trackResult
+        // self::_log("handleLPStatusFromProxy: ". $client . ":" . $token . ":" . $status . ":" . $score);
+    // }
     
     private static function _log($txt) {
         file_put_contents("xapilog.txt",$txt."\n",FILE_APPEND);
