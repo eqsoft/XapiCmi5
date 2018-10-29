@@ -215,31 +215,35 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
         }
 
         include_once("Services/Tracking/classes/class.ilObjUserTracking.php");
-        if (ilObjUserTracking::_enabledLearningProgress() &&
-            ($this->checkPermissionBool("edit_learning_progress") || $this->checkPermissionBool("read_learning_progress")))
+        if (ilObjUserTracking::_enabledLearningProgress() && ($this->checkPermissionBool("edit_learning_progress") || $this->checkPermissionBool("read_learning_progress")))
         {
             if ($this->object->getLPMode() > 0 && $this->checkPermissionBool("read_learning_progress"))
             {
-                if (ilObjUserTracking::_enabledUserRelatedData())
-                {
-                    $ilTabs->addTab("learning_progress", $lng->txt('learning_progress'), $ilCtrl->getLinkTargetByClass(array('ilObjXapiCmi5GUI','ilLearningProgressGUI','ilLPListOfObjectsGUI')));
-                }
-                else
-                {
-                    $ilTabs->addTab("learning_progress", $lng->txt('learning_progress'), $ilCtrl->getLinkTargetByClass(array('ilObjXapiCmi5GUI','ilLearningProgressGUI', 'ilLPListOfObjectsGUI'), 'showObjectSummary'));
-                }
+				// if ($this->checkPermissionBool("read_learning_progress"))
+				// {
+					if (ilObjUserTracking::_enabledUserRelatedData())
+					{
+						$ilTabs->addTab("learning_progress", $lng->txt('learning_progress'), $ilCtrl->getLinkTargetByClass(array('ilObjXapiCmi5GUI','ilLearningProgressGUI','ilLPListOfObjectsGUI')));//, 'showObjectSummary'
+					}
+					else
+					{
+						$ilTabs->addTab("learning_progress", $lng->txt('learning_progress'), $ilCtrl->getLinkTargetByClass(array('ilObjXapiCmi5GUI','ilLearningProgressGUI', 'ilLPListOfObjectsGUI'), 'showObjectSummary'));
+					}
+				// }
+				if ($this->checkPermissionBool("edit_learning_progress")) {
+					$ilTabs->addSubTab("lp_settings", $this->txt('settings'), $ilCtrl->getLinkTargetByClass(array('ilObjXapiCmi5GUI'), 'editLPSettings'));
+				}
             }
-            elseif ($this->checkPermissionBool("edit_learning_progress"))
-            {
-                $ilTabs->addTab('learning_progress', $lng->txt('learning_progress'), $ilCtrl->getLinkTarget($this,'editLPSettings'));
-            }
-
-			if (in_array($ilCtrl->getCmdClass(), array('illearningprogressgui', 'illplistofobjectsgui')))
-			{
-				$ilTabs->addSubTab("lp_settings", $this->txt('settings'), $ilCtrl->getLinkTargetByClass(array('ilObjXapiCmi5GUI'), 'editLPSettings'));
+			elseif ($this->checkPermissionBool("edit_learning_progress")) {
+				$ilTabs->addTab('learning_progress', $lng->txt('learning_progress'), $ilCtrl->getLinkTarget($this,'editLPSettings'));
 			}
-        }
+            
+			// if (in_array($ilCtrl->getCmdClass(), array('illearningprogressgui', 'illplistofobjectsgui')))
+			// {
+				// // $ilTabs->addSubTab("lp_settings", $this->txt('settings'), $ilCtrl->getLinkTargetByClass(array('ilObjXapiCmi5GUI'), 'editLPSettings'));
+			// }
 
+        }
         // standard permission tab
         $this->addPermissionTab();
     }
@@ -255,12 +259,6 @@ class ilObjXapiCmi5GUI extends ilObjectPluginGUI
     	
     	// switch ($a_tab)
     	// {
-    		// case "edit":
-           		// $ilTabs->addSubTab("settings", $lng->txt('settings'), $ilCtrl->getLinkTarget($this, 'edit'));    			
-           		// $ilTabs->addSubTab("instructions", $this->txt('instructions'), $ilCtrl->getLinkTarget($this, 'editInstructions'));    			
-           		// $ilTabs->addSubTab("icons", $this->txt('icons'), $ilCtrl->getLinkTarget($this, 'editIcons'));
-    			// break;
-
             // case "learning_progress":
                 // $lng->loadLanguageModule('trac');
 				// if ($this->checkPermissionBool("edit_learning_progress"))
