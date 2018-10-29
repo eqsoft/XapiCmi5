@@ -40,7 +40,7 @@ class ilXapiCmi5Importer extends ilXmlImporter {
 		}
 
 		//check id for given type_name
-		$entity->setTypeName((string) $xml->type_name.'x');
+		$entity->setTypeName((string) $xml->type_name);
 		if ($entity->getTypeId() == 0) {
 			$pl = new ilXapiCmi5Plugin();
 			ilUtil::sendFailure(sprintf($pl->txt('type_name_not_available'),$xml->type_name), false);
