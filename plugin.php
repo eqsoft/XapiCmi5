@@ -15,7 +15,7 @@
 $id = "xxcf";
  
 // code version; must be changed for all code changes
-define('xxcf_version', '0.1.5');
+define('xxcf_version', '0.1.6');
 $version = xxcf_version;
  
 // ilias min and max version; must always reflect the versions that should
@@ -27,5 +27,6 @@ $ilias_max_version = "5.3.999";
 $responsible = "Uwe Kohnle";
 $responsible_mail = "kohnle@internetlehrer-gmbh.de";
 
+$supports_export = true;
 $learning_progress = true;
 ?>
