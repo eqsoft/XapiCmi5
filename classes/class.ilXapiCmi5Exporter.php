@@ -23,6 +23,7 @@ class ilXapiCmi5Exporter extends ilXmlExporter {
 	public function getXmlRepresentation($a_entity, $a_schema_version, $a_id) {
 		$ref_ids = ilObject::_getAllReferences($a_id);
 		$ref_id = array_shift($ref_ids);
+		require_once("./Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/classes/class.ilObjXapiCmi5.php");
 		$entity = new ilObjXapiCmi5($ref_id);
 
 		include_once "./Services/Xml/classes/class.ilXmlWriter.php";
