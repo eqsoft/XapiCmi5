@@ -32,7 +32,7 @@ Extra Server Configuration
 
 - The XapiProxy needs specific cors settings for preflight requests (see https://developer.mozilla.org/de/docs/Web/HTTP/CORS)
 
-- for pure apache you can use the xapi/tpl.htaccess file. Copy and rename to .htaccess and allow .htaccess files to be parsed in that folder. For better performance it is recommanded to declare an extra directory directive in the apache conf for the PLUGIN/xapi* script with the preflight settings like this:
+-- for pure apache you can use the xapi/tpl.htaccess file. Copy and rename to .htaccess and allow .htaccess files to be parsed in that folder. For better performance it is recommanded to declare an extra directory directive in the apache conf for the PLUGIN/xapi* script with the preflight settings like this:
 
 ```
 <Directory /WEBROOT_PATH/Customizing/global/plugins/Services/Repository/RepositoryObject/XapiCmi5/xapi>
@@ -67,7 +67,7 @@ RewriteRule ^(.*)$ blank.php [QSA,L]
 
 ```
 
-- the preflight requests can be terminated by nginx like this if used as reverse proxy:
+-- in nginx environment the preflight requests can be terminated like this if used as reverse proxy:
 
 ```
 location ~ /xapi/xapiproxy.php {
